@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3550501412772034863}
   - component: {fileID: -2027868042698187000}
   - component: {fileID: -4854768688962391628}
+  - component: {fileID: 4259695475114293761}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -28,14 +29,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6111521276069586331}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.5, w: 0.8660254}
   m_LocalPosition: {x: -14.23, y: -3.89, z: -9.9}
-  m_LocalScale: {x: 4.5797534, y: 4.5797534, z: 4.5797534}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -60}
 --- !u!33 &6598569907914005446
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -130,10 +131,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 1.0287805, y: 2, z: 1.0218238}
-  m_Center: {x: 0.0011846345, y: 0, z: 0.000599098}
+  m_Size: {x: 0.6922228, y: 2, z: 0.69388753}
+  m_Center: {x: 0.003829956, y: -5.921902e-11, z: 0.0030264854}
 --- !u!114 &-4854768688962391628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +149,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingMetric: 0
   scoreMultiplier: 1
+--- !u!64 &4259695475114293761
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6111521276069586331}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
