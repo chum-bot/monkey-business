@@ -82,24 +82,33 @@ namespace MBNamespace
             monkey.transform.position = monkey.initPos;
             monkey.rb.velocity = Vector3.zero;
             monkey.transform.rotation = new Quaternion(-90, -90, -90, 1);
+            monkey.fly = false;
 
             //the stuff for the different attributes of each type
             //i can always separate this into smth else if it ends up being too big
-            //switch (monkey.type)
-            //{
-            //    case MONKEYTYPE.normal:
-            //        monkey.transform.localScale = new Vector3(100, 100, 100);
-            //        monkey.typeforce = new Vector3(0, 0);
-            //        break;
-            //    case MONKEYTYPE.fat:
-            //        monkey.transform.localScale = new Vector3(125, 125, 125);
-            //        monkey.rb.mass *= 20;
-            //        break;
-            //    case MONKEYTYPE.rocket:
-            //        monkey.transform.localScale = new Vector3(75, 75, 75);
-            //        monkey.typeforce = new Vector3(0, monkey.rb.mass * 0.6f);
-            //        break;
-            //}
+            switch (monkey.type)
+            {
+                case MONKEYTYPE.normal:
+                    monkey.transform.localScale = new Vector3(100, 100, 100);
+                    monkey.typeforce = new Vector3(0, 0);
+                    monkey.rb.mass = 1.0f;
+                    break;
+                case MONKEYTYPE.fat:
+                    monkey.transform.localScale = new Vector3(125, 125, 125);
+                    monkey.rb.mass = 1.5f;
+                    break;
+                case MONKEYTYPE.rocket:
+                    monkey.transform.localScale = new Vector3(75, 75, 75);
+                    monkey.typeforce = new Vector3(0, monkey.rb.mass / 2);
+                    monkey.rb.mass = 0.6f;
+                    break;
+                case MONKEYTYPE.bomb: //nothing special for now
+                    monkey.transform.localScale = new Vector3(100, 100, 100);
+                    monkey.typeforce = new Vector3(0, 0);
+                    monkey.rb.mass = 1.0f;
+                    break;
+            }
+            Debug.Log($"{monkey.type} monkey incoming!");
         }
 
         //the antigrab

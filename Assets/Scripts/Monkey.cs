@@ -20,6 +20,8 @@ public class Monkey : MonoBehaviour
     [SerializeField]
     public float speed = 1.0f;
 
+    public bool fly; //fly! (check for when monkey is thrown, replacement for long winded antigrab stuff)
+
     public Rigidbody rb { get; set; }
 
     public MONKEYTYPE type;
@@ -76,6 +78,7 @@ public class Monkey : MonoBehaviour
     }
 
     //so you don't softlock if it rolls off screen
+    //this is now entirely unnecessary because it literally can't rol off screen (there are walls)
     void OnBecameInvisible()
     {
         CreateMonkey(this);
