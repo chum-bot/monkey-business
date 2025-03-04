@@ -51,7 +51,6 @@ public class Monkey : MonoBehaviour
         //the monkeys harness the power of the typeforce...
         //(it's just some added forces for each type)
         //(from the type attributes in MBNamespace)
-        //doesn't do anything currently, all that stuff is commented out
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
         if (!GeometryUtility.TestPlanesAABB(planes, GetComponent<Renderer>().bounds)) CreateMonkey(this);
         //man why does onbecameinvisible not work anymore
@@ -78,7 +77,7 @@ public class Monkey : MonoBehaviour
     }
 
     //so you don't softlock if it rolls off screen
-    //this is now entirely unnecessary because it literally can't rol off screen (there are walls)
+    //this is now entirely unnecessary because it literally can't roll off screen (there are walls)
     void OnBecameInvisible()
     {
         CreateMonkey(this);

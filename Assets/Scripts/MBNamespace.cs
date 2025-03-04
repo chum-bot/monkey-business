@@ -112,9 +112,10 @@ namespace MBNamespace
         }
 
         //the antigrab
-        //to implement just put if(antigrab(monkey)) around the onmousedown stuff in throwing
-        //and it should work fine
-        //nake sure you define the monkey in there if you haven't already
+        //stops you from grabbing the monkey if it's past the death zone
+        //i actually just gave the monkey a fly parameter that serves the same purpose but
+        //i ran into an issue where i could only pick it up once
+        //didn't want to bother fixing it so i just added this back
         public static bool AntiGrab(Monkey monkey)
         {
             Array deathZones = FindObjectsOfType<DeathZone>();

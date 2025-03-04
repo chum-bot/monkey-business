@@ -19,13 +19,19 @@ public class SwipeThrowSensitive : MonoBehaviour
     //
     private Vector3 lastMousePos;
     private float dragSpeed;
+
+    //this is literally only here for the gizmos
+    //i wouldn't define it outside of here otherwise
     private Vector3 throwforce;
 
-    private Monkey monkey; //defined the monkey being thrown for use with antigrab
+    private Monkey monkey;
     private Rigidbody rb;
 
     private Plane dragPlane;
 
+    //dragTime!
+    //tracks how long the player is actively moving the monkey
+    //so we can get the speed at which they flicked it
     private float dragTime;
 
     void Start()
@@ -42,7 +48,7 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (AntiGrab(monkey) || !monkey.fly)
+        if (AntiGrab(monkey) || !monkey.fly) //the fat monkey might unironically be too fat for this lol
         {
             isDragging = true;
 
@@ -59,15 +65,21 @@ public class SwipeThrowSensitive : MonoBehaviour
     {
         if (!isDragging) return;
 
+        //this changes every frame you're holding it
+        //honestly this is more like dragDistance, but endPos - startPos is the true drag distance so
         dragSpeed = (Input.mousePosition - lastMousePos).magnitude;
         if(dragSpeed > 0.0f)
         {
+            //dragTime counts up when you're dragging
             dragTime += Time.deltaTime;
         }
         else
         {
+            //and resets when you're not
             dragTime = 0;
-            startPos = Input.mousePosition; //so you can move the cursor to aim and you don't have to start from where you first grabbed the monkey
+            startPos = Input.mousePosition; 
+            //the startPos reset makes it so you can move the cursor from the starting position to aim
+            //and you don't have to start from where you first grabbed the monkey
         }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -76,7 +88,8 @@ public class SwipeThrowSensitive : MonoBehaviour
         {
             transform.position = ray.GetPoint(enter);
         }
-        if (dragSpeed > 0 && transform.position.y > Camera.main.orthographicSize)
+        //the autorelease
+        if (dragSpeed > 0 && transform.position.y > Camera.main.orthographicSize) 
         {
             Throw();
         }
@@ -96,7 +109,6 @@ public class SwipeThrowSensitive : MonoBehaviour
         rb.isKinematic = false;
         endPos = Input.mousePosition;
 
-        //all of the old stuff but in one thing
         //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
         //the dragSpeed check is so it doesn't go flying when you release it and have only been barely moving
         if (dragTime > 0 && dragSpeed > minSpeed / 5)
@@ -106,22 +118,24 @@ public class SwipeThrowSensitive : MonoBehaviour
             Vector3 relationForward = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.forward.z);
 
             //the throwforce
+            //this is all of the old stuff but in one thing
+            //the elapsed from before was causing a bug where if you held on to it for a while and threw it
+            //it would go absolutely nowhere bc it was being divided by the time spent holding it
+            //you have no time to aim, so i added dragTime in its place
             throwforce = (endPos - startPos) / dragTime * Time.deltaTime;
 
             throwforce.z = relationForward.z * throwforce.magnitude; // the forward
             throwforce = throwforce.normalized * Math.Clamp(dragSpeed * monkey.speed, minSpeed, maxSpeed);
-            //basically how this works is it takes the speed the player flicked and multiplies that by the monkey speed, with a min and max speed so it doesn't fly too far
+            //basically how this works is it takes the speed the player flicked and multiplies that by the monkey's speed
+            //with a min and max so it doesn't fly too far
         }
         rb.AddForce(throwforce, ForceMode.Impulse);
         //impulse makes it mass-based so we can change that for smth like the fat monkey
-
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.transform.position + Camera.main.transform.forward);
-        Gizmos.color = Color.blue;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, transform.transform.position + throwforce);
     }
 
