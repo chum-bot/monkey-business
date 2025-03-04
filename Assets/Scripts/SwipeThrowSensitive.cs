@@ -28,8 +28,8 @@ public class SwipeThrowSensitive : MonoBehaviour
     private Vector3 lastMousePos;
     private Vector3 dragSpeed;
 
-    private Vector3 throwVelocity;
-    private Vector3 throwVel;
+    private Vector3 throwforceocity;
+    private Vector3 throwforce;
 
     private Monkey monkey; //defined the monkey being thrown for use with antigrab
     private Rigidbody rb;
@@ -96,40 +96,25 @@ public class SwipeThrowSensitive : MonoBehaviour
         rb.isKinematic = false;
         endPos = Input.mousePosition;
 
-        //float vert = endPos.y - startPos.y;
-        //float hor = endPos.x - startPos.x;
-        //float horSpeed = hor / dragTime;
-        //float speed = horSpeed * horizontalSensitivity;
-        //float verticalSpeed = vert / dragTime;
-        //float vertSpeed = verticalSpeed * verticalSensitivity;
-        //float upSpeed = verticalSpeed * upwardSensitivity;
-
-        //all of that up top but in one thing
+        //all of the old stuff but in one thing
         //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
-        if (dragTime > 0 && dragSpeed.magnitude > minSpeed)
+        //the dragSpeed check is so it doesn't go flying when you release it and have only been barely moving
+        if (dragTime > 0 && dragSpeed.magnitude > minSpeed / 5)
         {
+            //the forward vector in relation to the monkey
+            //i couldn't use transform.forward bc that would change based on the monkey's rotation
             Vector3 relationForward = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.forward.z);
 
-            throwVel = (endPos - startPos) / dragTime * Time.deltaTime;
+            //the throwforce
+            throwforce = (endPos - startPos) / dragTime * Time.deltaTime; 
 
-            throwVel.z = relationForward.z * throwVel.magnitude;
-            Debug.Log(relationForward);
-            Debug.Log(throwVel);
-            throwVel = throwVel.normalized * Math.Clamp(dragSpeed.magnitude, minSpeed, maxSpeed) * monkey.speed; //goes as far as the dragSpeed
-
+            throwforce.z = relationForward.z * throwforce.magnitude; // the forward
+            throwforce = throwforce.normalized * Math.Clamp(dragSpeed.magnitude * monkey.speed, minSpeed, maxSpeed); 
+            //basically how this works is it takes the speed the player flicked and multiplies that by the monkey speed, with a nin and max speed
+            Debug.Log(throwforce.magnitude);
         }
 
-
-        Debug.Log($"{dragSpeed.magnitude} is the dragSpeed");
-
-        //Vector3 cam = Camera.main.transform.forward;
-        //cam.y = 0;
-        //cam.Normalize();
-
-        //Vector3 camRight = Camera.main.transform.right;
-
-        //throwVelocity = cam * vertSpeed + camRight * speed + Vector3.up * upSpeed;
-        rb.AddForce(throwVel, ForceMode.VelocityChange);
+        rb.AddForce(throwforce, ForceMode.Impulse); //impulse makes it mass-based so we can change that for smth like the fat monkey
     }
 
     private void OnDrawGizmos()
@@ -137,7 +122,7 @@ public class SwipeThrowSensitive : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.transform.position + Camera.main.transform.forward);
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.transform.position + throwVel);
+        Gizmos.DrawLine(transform.position, transform.transform.position + throwforce);
     }
 
 }
