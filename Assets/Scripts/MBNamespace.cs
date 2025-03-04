@@ -109,18 +109,18 @@ namespace MBNamespace
         public static bool AntiGrab(Monkey monkey)
         {
             Array deathZones = FindObjectsOfType<DeathZone>();
-            float closestStartXDist = 999999;
+            float closestStartZDist = 999999;
             Vector3 closestStart = Vector3.zero;
             foreach (DeathZone deathZone in deathZones)
             {
-                float startXDist = Math.Abs(deathZone.start.x);
-                if (startXDist < closestStartXDist)
+                float startXDist = Math.Abs(deathZone.start.z);
+                if (startXDist < closestStartZDist)
                 {
-                    closestStartXDist = startXDist;
+                    closestStartZDist = startXDist;
                     closestStart = deathZone.start;
                 }
             }
-            return closestStart.x < monkey.transform.position.x;
+            return closestStart.z > monkey.transform.position.z;
         }
     }
 }

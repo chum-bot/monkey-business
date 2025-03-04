@@ -17,6 +17,9 @@ public class Monkey : MonoBehaviour
     //i think it'd be cool if each monkey had point values, we could manipulate that
     //solid gold monkey worth 20 thousand points or smth silly
 
+    [SerializeField]
+    public float speed = 1.0f;
+
     public Rigidbody rb { get; set; }
 
     public MONKEYTYPE type;
