@@ -57,11 +57,11 @@ public class Monkey : MonoBehaviour
         //i guess this would be better in the long run bc it works in case we'd want more cameras
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collider)
     {
-        if (collision.gameObject.GetComponent<Barrel>()) //no need to loop now!
+        if (collider.gameObject.GetComponent<Barrel>()) //no need to loop now!
         {
-            Barrel hitBarrel = collision.gameObject.GetComponent<Barrel>();
+            Barrel hitBarrel = collider.gameObject.GetComponent<Barrel>();
             if (IsSorted(this, hitBarrel))
             {
                 PointManager.instance.Score((pointValue  + comboCount) * hitBarrel.scoreMultiplier);

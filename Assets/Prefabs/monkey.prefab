@@ -125,11 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d65e9cbaac22564186fa66ef61af21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalSensitivity: 0.001
-  horizontalSensitivity: 0.001
-  upwardSensitivity: 0.004
-  sensitivity: 1
-  maxSpeed: 5000
+  maxSpeed: 40
   minSpeed: 10
 --- !u!136 &4811213307171528552
 CapsuleCollider:
@@ -169,4 +165,5 @@ MonoBehaviour:
   sortingMetric: 0
   pointValue: 1
   speed: 3
+  fly: 0
   type: 0

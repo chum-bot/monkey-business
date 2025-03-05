@@ -50,6 +50,7 @@ public class SwipeThrowSensitive : MonoBehaviour
     {
         if (AntiGrab(monkey) || !monkey.fly) //the fat monkey might unironically be too fat for this lol
         {
+            throwforce = Vector3.zero;
             isDragging = true;
 
             rb.isKinematic = true;
@@ -115,7 +116,7 @@ public class SwipeThrowSensitive : MonoBehaviour
         {
             //the forward vector in relation to the monkey
             //i couldn't use transform.forward bc that would change based on the monkey's rotation
-            Vector3 relationForward = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.forward.z);
+            Vector3 relationForward = new Vector3(endPos.x, endPos.y, Camera.main.transform.forward.z);
 
             //the throwforce
             //this is all of the old stuff but in one thing
