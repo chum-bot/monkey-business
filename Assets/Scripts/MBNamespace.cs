@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 using static MBNamespace.MBVars;
@@ -33,8 +34,8 @@ namespace MBNamespace
 
         public static int comboCount = 0;
         public static Array types = Enum.GetValues(typeof(MONKEYTYPE));
-        public static List<Color> colors = MBFunctions.GetBarrelColors();
-        public static List<string> colorNames = new List<string>();
+        public static List<Texture> monkeyTextures = MBFunctions.GetMonkeyTextures();
+        public static List<string> barrelColors = MBFunctions.GetBarrelColors();
     }
     public class MBFunctions : MonoBehaviour
     {
@@ -62,16 +63,48 @@ namespace MBNamespace
         //this is for the random monkey colors mainly
         //it'll pick from the colors of all the barrels in the scene
         //and this gets those colors
-        public static List<Color> GetBarrelColors()
+        public static List<string> GetBarrelColors()
         {
-            List<Color> colors = new List<Color>();
             UnityEngine.Object[] barrels = FindObjectsOfType(typeof(Barrel));
-            foreach (UnityEngine.Object barrel in barrels)
+            List<string> colors = new List<string>();
+            foreach (Barrel barrel in barrels)
             {
-                colors.Add(barrel.GetComponent<Renderer>().material.color);
+                string name = barrel.GetComponent<Renderer>().material.name;
+                colors.Add(name.Substring(0, name.IndexOf(" ")));
+                barrel.color = name.Substring(0, name.IndexOf(" "));
             }
-
             return colors;
+        }
+
+        public static List<Texture> GetMonkeyTextures()
+        {
+            List<Texture> monkeyTxtrs = new List<Texture>();
+            UnityEngine.Object[] textures = Resources.FindObjectsOfTypeAll(typeof(Texture));
+            foreach (Texture txtr in textures)
+            {
+                if (txtr.name.Contains("Monkey"))
+                {
+                    monkeyTxtrs.Add(txtr);
+                }
+            }
+            return monkeyTxtrs;
+        }
+
+        public static Texture RandomizedMonkeyTexture()
+        {
+            List<Texture> validTextures = new List<Texture>();
+            foreach (Texture txtr in monkeyTextures)
+            {
+                foreach (string color in barrelColors)
+                {
+                    if (txtr.name.Contains(color))
+                    {
+                        validTextures.Add(txtr);
+                    }
+                }
+            }
+            int randMonkeyMat = UnityEngine.Random.Range(0, validTextures.Count);
+            return validTextures[randMonkeyMat];
         }
 
         //the respawning
@@ -79,12 +112,13 @@ namespace MBNamespace
         public static void CreateMonkey(Monkey monkey)
         {
             monkey.type = (MONKEYTYPE)UnityEngine.Random.Range(0, types.Length);
-            monkey.color = colors[UnityEngine.Random.Range(0, colors.Count)];
 
-            monkey.GetComponent<Renderer>().material.color = monkey.color;
+            monkey.GetComponentInChildren<Renderer>().material.SetTexture("_MainTex", RandomizedMonkeyTexture());
+            string monkeyTexColor = monkey.GetComponentInChildren<Renderer>().material.mainTexture.name;
+            monkey.color = monkeyTexColor.Substring(0, monkeyTexColor.IndexOf("M"));
             monkey.transform.position = monkey.initPos;
             monkey.rb.velocity = Vector3.zero;
-            monkey.transform.rotation = new Quaternion(-90, -90, -90, 1);
+            monkey.transform.rotation = new Quaternion(0, 0, 0, 1);
             monkey.fly = false;
 
             //the stuff for the different attributes of each type
@@ -92,21 +126,20 @@ namespace MBNamespace
             switch (monkey.type)
             {
                 case MONKEYTYPE.normal:
-                    monkey.transform.localScale = new Vector3(100, 100, 100);
+                    monkey.transform.localScale = new Vector3(1, 1, 1);
                     monkey.typeforce = new Vector3(0, 0);
                     monkey.rb.mass = 1.0f;
                     break;
                 case MONKEYTYPE.fat:
-                    monkey.transform.localScale = new Vector3(125, 125, 125);
+                    monkey.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
                     monkey.rb.mass = 1.5f;
                     break;
                 case MONKEYTYPE.rocket:
-                    monkey.transform.localScale = new Vector3(75, 75, 75);
-                    monkey.typeforce = new Vector3(0, monkey.rb.mass / 2);
-                    monkey.rb.mass = 0.6f;
+                    monkey.transform.localScale = new Vector3(.75f, .75f, .75f);
+                    monkey.rb.mass = 0.7f;
                     break;
                 case MONKEYTYPE.bomb: //nothing special for now
-                    monkey.transform.localScale = new Vector3(100, 100, 100);
+                    monkey.transform.localScale = new Vector3(1, 1, 1);
                     monkey.typeforce = new Vector3(0, 0);
                     monkey.rb.mass = 1.0f;
                     break;

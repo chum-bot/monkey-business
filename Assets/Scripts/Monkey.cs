@@ -25,7 +25,11 @@ public class Monkey : MonoBehaviour
     public Rigidbody rb { get; set; }
 
     public MONKEYTYPE type;
-    public Color color { get; set; }
+    public string color { get; set; }
+
+    private string fullGovernmentColor;
+
+    private float softlockTimer;
 
     public Vector3 initPos { get; set; }
     public Vector3 typeforce { get; set; }
@@ -38,10 +42,12 @@ public class Monkey : MonoBehaviour
         //i'm taking directly from it now so i don't have to hardcode colors in
         //and we can easily make new ones w/ materials
         rb = GetComponent<Rigidbody>();
-        color = GetComponent<Renderer>().material.color;
         initPos = rb.position;
         typeforce = new Vector3(0, 0, 0);
         gameObject.SetActive(true);
+        fullGovernmentColor = GetComponentInChildren<Renderer>().material.mainTexture.name;
+        color = fullGovernmentColor.Substring(0, fullGovernmentColor.IndexOf("M"));
+        softlockTimer = 3;
     }
 
     // Update is called once per frame
@@ -55,6 +61,20 @@ public class Monkey : MonoBehaviour
         if (!GeometryUtility.TestPlanesAABB(planes, GetComponent<Renderer>().bounds)) CreateMonkey(this);
         //man why does onbecameinvisible not work anymore
         //i guess this would be better in the long run bc it works in case we'd want more cameras
+
+        if (fly && rb.velocity.magnitude == 0)
+        {
+            softlockTimer -= Time.deltaTime;
+        }
+        else
+        {
+            softlockTimer = 3;
+        }
+        if(softlockTimer <= 0)
+        {
+            CreateMonkey(this);
+        }
+        Debug.Log(softlockTimer);
     }
 
     void OnTriggerEnter(Collider collider)
@@ -62,6 +82,7 @@ public class Monkey : MonoBehaviour
         if (collider.gameObject.GetComponent<Barrel>()) //no need to loop now!
         {
             Barrel hitBarrel = collider.gameObject.GetComponent<Barrel>();
+            Debug.Log($"monkey's color is {color} and barrel's color is {hitBarrel.color}");
             if (IsSorted(this, hitBarrel))
             {
                 PointManager.instance.Score((pointValue  + comboCount) * hitBarrel.scoreMultiplier);

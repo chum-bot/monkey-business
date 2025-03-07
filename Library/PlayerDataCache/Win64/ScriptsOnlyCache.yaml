@@ -55,6 +55,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
+    - Class: 90
+      Script: {instanceID: 0}
+    - Class: 95
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -404,7 +408,7 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionExit2DMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 0772e668ee6b31e7eab51802ea8cac0e
+      Hash: a8cc5bf65aa14ef1a459cd4f6e2f43de
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: Monkey
@@ -560,7 +564,7 @@ ScriptsOnlyBuild:
     className: UnityOnTransformChildrenChangedMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 398efbc09fd08651d99d7be68dca6bd3
+      Hash: bbc9981bf47c006ce46a10a69b2d36c6
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: SwipeThrowSensitive
@@ -957,4 +961,4 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Scenes/monkey-test.unity
-  playerPath: C:/Users/zacha/source/repos/My project/My project/Builds/My project.exe
+  playerPath: C:/Users/zacha/source/repos/monkey-business/Builds/My project.exe

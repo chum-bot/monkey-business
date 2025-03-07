@@ -15,7 +15,7 @@ C:/Users/zacha/source/repos/monkey-business
 -logFile
 Logs/AssetImportWorker3.log
 -srvPort
-55481
+49406
 Successfully changed project path to: C:/Users/zacha/source/repos/monkey-business
 C:/Users/zacha/source/repos/monkey-business
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -49,11 +49,11 @@ C:/Users/zacha/source/repos/monkey-business
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [17828] Host "[IP] 129.21.66.106 [Port] 0 [Flags] 2 [Guid] 2145269583 [EditorId] 2145269583 [Version] 1048832 [Id] WindowsEditor(7,JUNO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [6700] Host "[IP] 129.21.66.106 [Port] 0 [Flags] 2 [Guid] 999899172 [EditorId] 999899172 [Version] 1048832 [Id] WindowsEditor(7,JUNO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [17828] Host "[IP] 129.21.66.106 [Port] 0 [Flags] 2 [Guid] 2145269583 [EditorId] 2145269583 [Version] 1048832 [Id] WindowsEditor(7,JUNO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [6700] Host "[IP] 129.21.66.106 [Port] 0 [Flags] 2 [Guid] 999899172 [EditorId] 999899172 [Version] 1048832 [Id] WindowsEditor(7,JUNO) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
-Refreshing native plugins compatible for Editor in 7.39 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 7.21 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.4f1 (35713cd46cd7)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/Resources/UnitySubsystems
@@ -69,44 +69,44 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56380
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56424
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.006028 seconds.
-- Loaded All Assemblies, in  0.259 seconds
+Registered in 0.005795 seconds.
+- Loaded All Assemblies, in  0.327 seconds
 Native extension for WindowsStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.236 seconds
-Domain Reload Profiling: 494ms
-	BeginReloadAssembly (70ms)
+- Finished resetting the current domain, in  0.231 seconds
+Domain Reload Profiling: 557ms
+	BeginReloadAssembly (92ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (1ms)
-	RebuildCommonClasses (26ms)
+	RebuildCommonClasses (32ms)
 	RebuildNativeTypeToScriptingClass (8ms)
-	initialDomainReloadingComplete (49ms)
-	LoadAllAssembliesAndSetupDomain (105ms)
-		LoadAssemblies (67ms)
+	initialDomainReloadingComplete (53ms)
+	LoadAllAssembliesAndSetupDomain (140ms)
+		LoadAssemblies (90ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (100ms)
-			TypeCache.Refresh (99ms)
-				TypeCache.ScanAssembly (90ms)
-			ScanForSourceGeneratedMonoScriptInfo (0ms)
-			ResolveRequiredComponents (0ms)
-	FinalizeReload (237ms)
+		AnalyzeDomain (135ms)
+			TypeCache.Refresh (133ms)
+				TypeCache.ScanAssembly (120ms)
+			ScanForSourceGeneratedMonoScriptInfo (1ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (231ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (189ms)
+		SetupLoadedEditorAssemblies (179ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (8ms)
-			SetLoadedEditorAssemblies (6ms)
+			InitializePlatformSupportModulesInManaged (7ms)
+			SetLoadedEditorAssemblies (7ms)
 			RefreshPlugins (0ms)
 			BeforeProcessingInitializeOnLoad (2ms)
-			ProcessInitializeOnLoadAttributes (125ms)
-			ProcessInitializeOnLoadMethodAttributes (48ms)
+			ProcessInitializeOnLoadAttributes (120ms)
+			ProcessInitializeOnLoadMethodAttributes (42ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -114,51 +114,51 @@ Domain Reload Profiling: 494ms
 ========================================================================
 Worker process is ready to serve import requests
 Begin MonoManager ReloadAssembly
-- Loaded All Assemblies, in  0.718 seconds
-Refreshing native plugins compatible for Editor in 3.15 ms, found 3 plugins.
+- Loaded All Assemblies, in  0.655 seconds
+Refreshing native plugins compatible for Editor in 3.00 ms, found 3 plugins.
 Native extension for WindowsStandalone target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.535 seconds
-Domain Reload Profiling: 1251ms
-	BeginReloadAssembly (105ms)
+- Finished resetting the current domain, in  0.487 seconds
+Domain Reload Profiling: 1140ms
+	BeginReloadAssembly (112ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (5ms)
+		DisableScriptedObjects (7ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (18ms)
-	RebuildCommonClasses (26ms)
+	RebuildCommonClasses (25ms)
 	RebuildNativeTypeToScriptingClass (8ms)
 	initialDomainReloadingComplete (36ms)
-	LoadAllAssembliesAndSetupDomain (540ms)
-		LoadAssemblies (224ms)
+	LoadAllAssembliesAndSetupDomain (471ms)
+		LoadAssemblies (225ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (364ms)
-			TypeCache.Refresh (347ms)
-				TypeCache.ScanAssembly (336ms)
-			ScanForSourceGeneratedMonoScriptInfo (14ms)
+		AnalyzeDomain (293ms)
+			TypeCache.Refresh (274ms)
+				TypeCache.ScanAssembly (263ms)
+			ScanForSourceGeneratedMonoScriptInfo (15ms)
 			ResolveRequiredComponents (3ms)
-	FinalizeReload (535ms)
+	FinalizeReload (488ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (400ms)
+		SetupLoadedEditorAssemblies (362ms)
 			LogAssemblyErrors (0ms)
 			InitializePlatformSupportModulesInManaged (5ms)
-			SetLoadedEditorAssemblies (4ms)
+			SetLoadedEditorAssemblies (3ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (51ms)
-			ProcessInitializeOnLoadAttributes (314ms)
-			ProcessInitializeOnLoadMethodAttributes (20ms)
+			BeforeProcessingInitializeOnLoad (49ms)
+			ProcessInitializeOnLoadAttributes (283ms)
+			ProcessInitializeOnLoadMethodAttributes (15ms)
 			AfterProcessingInitializeOnLoad (7ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (8ms)
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Refreshing native plugins compatible for Editor in 4.33 ms, found 3 plugins.
+		AwakeInstancesAfterBackupRestoration (5ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
+Refreshing native plugins compatible for Editor in 3.81 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 3102 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 33 unused Assets / (57.4 KB). Loaded Objects now: 3568.
-Memory consumption went from 116.9 MB to 116.8 MB.
-Total: 4.225800 ms (FindLiveObjects: 0.264500 ms CreateObjectMapping: 0.095700 ms MarkObjects: 3.742900 ms  DeleteObjects: 0.121400 ms)
+Unloading 33 unused Assets / (56.7 KB). Loaded Objects now: 3569.
+Memory consumption went from 116.8 MB to 116.8 MB.
+Total: 2.892300 ms (FindLiveObjects: 0.202400 ms CreateObjectMapping: 0.075900 ms MarkObjects: 2.517700 ms  DeleteObjects: 0.095500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
@@ -173,126 +173,6 @@ AssetImportParameters requested are different than current active one (requested
   custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 242683.661638 seconds.
-  path: Assets/Textures/green monkey/monkeyUnwrapped_DefaultMaterial_Height.png
-  artifactKey: Guid(745f2e7e3f7108d459429d151e672cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/green monkey/monkeyUnwrapped_DefaultMaterial_Height.png using Guid(745f2e7e3f7108d459429d151e672cd3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '54beb355b33bbc2df2e8e8d7c7f17c1d') in 0.048404 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.509568 seconds.
-  path: Assets/Textures/orange monkey/monkeyUnwrapped_DefaultMaterial_Height.png
-  artifactKey: Guid(f383d2ef48ed09a43a56a5be7c1a922f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/orange monkey/monkeyUnwrapped_DefaultMaterial_Height.png using Guid(f383d2ef48ed09a43a56a5be7c1a922f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '51dba4a24333e619060b83d8e9e63875') in 0.006000 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000033 seconds.
-  path: Assets/Textures/orange monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png
-  artifactKey: Guid(69298fb3c2737d34aa053a662cda2884) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/orange monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png using Guid(69298fb3c2737d34aa053a662cda2884) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cf496f9859b1783d7640320ffbf2fcd4') in 0.005949 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000023 seconds.
-  path: Assets/Textures/orange monkey/monkeyUnwrapped_DefaultMaterial_Normal.png
-  artifactKey: Guid(91d20ba59378aa040bea9545ad261f17) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/orange monkey/monkeyUnwrapped_DefaultMaterial_Normal.png using Guid(91d20ba59378aa040bea9545ad261f17) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4a1de7372832e3b300ba7a1cbfe114f9') in 0.006889 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.268644 seconds.
-  path: Assets/Textures/pink monkey/monkeyUnwrapped_DefaultMaterial_Height.png
-  artifactKey: Guid(6a5bc994188caae46888ada66cc700a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/pink monkey/monkeyUnwrapped_DefaultMaterial_Height.png using Guid(6a5bc994188caae46888ada66cc700a8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd30413968df42771886de9b81ef620f5') in 0.006540 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Textures/pink monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png
-  artifactKey: Guid(4031ce563fbb8a54d8d943c6188e3f61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/pink monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png using Guid(4031ce563fbb8a54d8d943c6188e3f61) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4f49483a0d5eb414d96607d4e7878ddf') in 0.006592 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Textures/pink monkey/monkeyUnwrapped_DefaultMaterial_Normal.png
-  artifactKey: Guid(aff578efe543c6e4a821ec46cc9e2421) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/pink monkey/monkeyUnwrapped_DefaultMaterial_Normal.png using Guid(aff578efe543c6e4a821ec46cc9e2421) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d18bd675e8f378d71b240c04204a5a5') in 0.006673 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.259422 seconds.
-  path: Assets/Textures/purple monkey/monkeyUnwrapped_DefaultMaterial_Height.png
-  artifactKey: Guid(bbde6e0dde650674bb3f53c9f93f1021) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/purple monkey/monkeyUnwrapped_DefaultMaterial_Height.png using Guid(bbde6e0dde650674bb3f53c9f93f1021) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e57363395a4571395bba937d2c0c83ed') in 0.005794 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000015 seconds.
-  path: Assets/Textures/purple monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png
-  artifactKey: Guid(62b1c24889fb1cf4c9eb6312e693e249) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/purple monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png using Guid(62b1c24889fb1cf4c9eb6312e693e249) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1b81c066e801d76ba63c4d50373ff74') in 0.006047 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000031 seconds.
-  path: Assets/Textures/purple monkey/monkeyUnwrapped_DefaultMaterial_Roughness.png
-  artifactKey: Guid(65dea45f33a65084997e883553cdbfa4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/purple monkey/monkeyUnwrapped_DefaultMaterial_Roughness.png using Guid(65dea45f33a65084997e883553cdbfa4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '09936942f285b83bc5d57653753fadb7') in 0.006546 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.267542 seconds.
-  path: Assets/Textures/red monkey/monkeyUnwrapped_DefaultMaterial_Height.png
-  artifactKey: Guid(8701eec9c8afdfe48856bf6b31eace0a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/red monkey/monkeyUnwrapped_DefaultMaterial_Height.png using Guid(8701eec9c8afdfe48856bf6b31eace0a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '62f0fc926e31e5e5b739e6c0d65363a5') in 0.006736 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000016 seconds.
-  path: Assets/Textures/red monkey/monkeyUnwrapped_DefaultMaterial_Normal.png
-  artifactKey: Guid(56f27b8ed7acbc7458cd310bbcf01916) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/red monkey/monkeyUnwrapped_DefaultMaterial_Normal.png using Guid(56f27b8ed7acbc7458cd310bbcf01916) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '97eec66a1b3974cb2f9d471e29e7911b') in 0.006794 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/Textures/red monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png
-  artifactKey: Guid(1c7130183c1fc984ca23ec586a1c0e54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/red monkey/monkeyUnwrapped_DefaultMaterial_Metallic.png using Guid(1c7130183c1fc984ca23ec586a1c0e54) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '722afc439c8f586640a70a5fa48ee0a0') in 0.006149 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.331768 seconds.
-  path: Assets/Textures/yellow monkey/monkeyUnwrapped_DefaultMaterial_Height.png
-  artifactKey: Guid(3fb5cbd53ad446c43a0529b9d2ff3f37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/yellow monkey/monkeyUnwrapped_DefaultMaterial_Height.png using Guid(3fb5cbd53ad446c43a0529b9d2ff3f37) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ecd17bc5b891c8d4d8276d101bb693cd') in 0.006260 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Textures/yellow monkey/monkeyUnwrapped_DefaultMaterial_Roughness.png
-  artifactKey: Guid(8d952d88f317fe749a4c8641c6f2a790) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Textures/yellow monkey/monkeyUnwrapped_DefaultMaterial_Roughness.png using Guid(8d952d88f317fe749a4c8641c6f2a790) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '329d59a46c9eb40a9dfd63806c0ae755') in 0.009146 seconds
-Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 2
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: The I/O operation has been aborted because of either a thread exit or an application request.
 AssetImportWorker is now disconnected from the server

@@ -10,7 +10,8 @@ public class Barrel : MonoBehaviour
     [SerializeField]
     public MBVars.SORTING sortingMetric; 
     public Rigidbody rb { get; set; }
-    public Color color { get; set; }
+    public string color { get; set; }
+    private string fullGovernmentColor;
 
     [SerializeField]
     public int scoreMultiplier;
@@ -18,6 +19,7 @@ public class Barrel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        color = GetComponent<Renderer>().material.color;
+        fullGovernmentColor = GetComponent<Renderer>().material.name;
+        color = fullGovernmentColor.Substring(0, fullGovernmentColor.IndexOf(" "));
     }
 }

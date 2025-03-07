@@ -120,15 +120,14 @@ public class SwipeThrowSensitive : MonoBehaviour
             //it would go absolutely nowhere bc it was being divided by the time spent holding it
             //you have no time to aim, so i added dragTime in its place
             throwforce = dragVector / dragTime * Time.deltaTime;
-            Debug.Log(dragVector.x);
             //it has the direction of the dragVector
             //so it goes in the direction you dragged it
             //why didn't i lead with this.
 
-
-            throwforce.z = Camera.main.transform.forward.z * throwforce.magnitude; // the forward
+            throwforce = Camera.main.ViewportToScreenPoint(throwforce);
+            throwforce += Camera.main.transform.forward * throwforce.magnitude; // the forward
+            Debug.Log($"{throwforce} is the throwforce");
             throwforce = throwforce.normalized * Math.Clamp(dragVector.magnitude * monkey.speed, minSpeed, maxSpeed);
-            Debug.Log(throwforce);
             //basically how this works is it takes the speed the player flicked and multiplies that by the monkey's speed
             //with a min and max so it doesn't fly too far
         }
