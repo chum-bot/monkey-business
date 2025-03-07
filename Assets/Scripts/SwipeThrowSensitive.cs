@@ -18,7 +18,7 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     //
     private Vector3 lastMousePos;
-    private float dragSpeed;
+    private Vector3 dragVector;
 
     //this is literally only here for the gizmos
     //i wouldn't define it outside of here otherwise
@@ -40,7 +40,7 @@ public class SwipeThrowSensitive : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         monkey = GetComponent<Monkey>();
         lastMousePos = Input.mousePosition;
-        dragSpeed = 0;
+        dragVector = Vector3.zero;
         dragTime = 0;
         monkey.fly = false;
     }
@@ -57,7 +57,7 @@ public class SwipeThrowSensitive : MonoBehaviour
             dragPlane = new Plane(Camera.main.transform.forward, transform.position);
 
             startPos = Input.mousePosition;
-            dragSpeed = 0;
+            dragVector = Vector3.zero;
             dragTime = 0;
         }
     }
@@ -68,8 +68,8 @@ public class SwipeThrowSensitive : MonoBehaviour
 
         //this changes every frame you're holding it
         //honestly this is more like dragDistance, but endPos - startPos is the true drag distance so
-        dragSpeed = (Input.mousePosition - lastMousePos).magnitude;
-        if(dragSpeed > 0.0f)
+        dragVector = Input.mousePosition - lastMousePos;
+        if(dragVector.magnitude > 0.0f)
         {
             //dragTime counts up when you're dragging
             dragTime += Time.deltaTime;
@@ -90,7 +90,7 @@ public class SwipeThrowSensitive : MonoBehaviour
             transform.position = ray.GetPoint(enter);
         }
         //the autorelease
-        if (dragSpeed > 0 && transform.position.y > Camera.main.orthographicSize) 
+        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize) 
         {
             Throw();
         }
@@ -112,21 +112,23 @@ public class SwipeThrowSensitive : MonoBehaviour
 
         //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
         //the dragSpeed check is so it doesn't go flying when you release it and have only been barely moving
-        if (dragTime > 0 && dragSpeed > minSpeed / 5)
+        if (dragTime > 0 && dragVector.magnitude > minSpeed / 5)
         {
-            //the forward vector in relation to the monkey
-            //i couldn't use transform.forward bc that would change based on the monkey's rotation
-            Vector3 relationForward = new Vector3(endPos.x, endPos.y, Camera.main.transform.forward.z);
-
             //the throwforce
             //this is all of the old stuff but in one thing
             //the elapsed from before was causing a bug where if you held on to it for a while and threw it
             //it would go absolutely nowhere bc it was being divided by the time spent holding it
             //you have no time to aim, so i added dragTime in its place
-            throwforce = (endPos - startPos) / dragTime * Time.deltaTime;
+            throwforce = dragVector / dragTime * Time.deltaTime;
+            Debug.Log(dragVector.x);
+            //it has the direction of the dragVector
+            //so it goes in the direction you dragged it
+            //why didn't i lead with this.
 
-            throwforce.z = relationForward.z * throwforce.magnitude; // the forward
-            throwforce = throwforce.normalized * Math.Clamp(dragSpeed * monkey.speed, minSpeed, maxSpeed);
+
+            throwforce.z = Camera.main.transform.forward.z * throwforce.magnitude; // the forward
+            throwforce = throwforce.normalized * Math.Clamp(dragVector.magnitude * monkey.speed, minSpeed, maxSpeed);
+            Debug.Log(throwforce);
             //basically how this works is it takes the speed the player flicked and multiplies that by the monkey's speed
             //with a min and max so it doesn't fly too far
         }
@@ -137,7 +139,7 @@ public class SwipeThrowSensitive : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.transform.position + throwforce);
+        Gizmos.DrawLine(transform.position, transform.position + throwforce);
     }
 
 }

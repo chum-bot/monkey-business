@@ -34,6 +34,7 @@ namespace MBNamespace
         public static int comboCount = 0;
         public static Array types = Enum.GetValues(typeof(MONKEYTYPE));
         public static List<Color> colors = MBFunctions.GetBarrelColors();
+        public static List<string> colorNames = new List<string>();
     }
     public class MBFunctions : MonoBehaviour
     {
@@ -72,12 +73,14 @@ namespace MBNamespace
 
             return colors;
         }
+
         //the respawning
         //really just warping the monkey back to the start and giving it new properties
         public static void CreateMonkey(Monkey monkey)
         {
             monkey.type = (MONKEYTYPE)UnityEngine.Random.Range(0, types.Length);
             monkey.color = colors[UnityEngine.Random.Range(0, colors.Count)];
+
             monkey.GetComponent<Renderer>().material.color = monkey.color;
             monkey.transform.position = monkey.initPos;
             monkey.rb.velocity = Vector3.zero;

@@ -20,7 +20,7 @@ public class Monkey : MonoBehaviour
     [SerializeField]
     public float speed = 1.0f;
 
-    public bool fly; //fly! (check for when monkey is thrown, replacement for long winded antigrab stuff)
+    public bool fly { get; set; } //fly! (check for when monkey is thrown, replacement for long winded antigrab stuff)
 
     public Rigidbody rb { get; set; }
 
