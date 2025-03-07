@@ -38,13 +38,26 @@ namespace MBNamespace
     }
     public class MBFunctions : MonoBehaviour
     {
+        // Added materials to assign in the inspector based on monkey's color property
+        public Material redMaterial;
+        public Material blueMaterial;
+        public Material yellowMaterial;
+
+        // Singleton instance to access the materials in static methods
+        public static MBFunctions instance;
+
+        private void Awake()
+        {
+            instance = this;
+        }
+
         public static bool IsSorted(Monkey monkey, Barrel barrel)
         {
             if (monkey.sortingMetric == barrel.sortingMetric)
             {
                 switch (monkey.sortingMetric)
                 {
-                    case SORTING.color:
+                    case MBVars.SORTING.color:
                         return monkey.color == barrel.color;
                     //noticing i never explicitly check if it's true here
                     //i just return the result, and the other thing that uses it will handle that
@@ -78,10 +91,20 @@ namespace MBNamespace
         //really just warping the monkey back to the start and giving it new properties
         public static void CreateMonkey(Monkey monkey)
         {
-            monkey.type = (MONKEYTYPE)UnityEngine.Random.Range(0, types.Length);
-            monkey.color = colors[UnityEngine.Random.Range(0, colors.Count)];
+            monkey.type = (MBVars.MONKEYTYPE)UnityEngine.Random.Range(0, MBVars.types.Length);
+            monkey.color = MBVars.colors[UnityEngine.Random.Range(0, MBVars.colors.Count)];
 
-            monkey.GetComponent<Renderer>().material.color = monkey.color;
+            // Assign the monkey a material based on its color property using inspector-assigned materials
+            Renderer monkeyRenderer = monkey.GetComponent<Renderer>();
+            if (monkey.color == Color.red)
+                monkeyRenderer.material = instance.redMaterial;
+            else if (monkey.color == Color.blue)
+                monkeyRenderer.material = instance.blueMaterial;
+            else if (monkey.color == Color.yellow)
+                monkeyRenderer.material = instance.yellowMaterial;
+            else
+                monkeyRenderer.material.color = monkey.color;
+
             monkey.transform.position = monkey.initPos;
             monkey.rb.velocity = Vector3.zero;
             monkey.transform.rotation = new Quaternion(-90, -90, -90, 1);
@@ -91,21 +114,21 @@ namespace MBNamespace
             //i can always separate this into smth else if it ends up being too big
             switch (monkey.type)
             {
-                case MONKEYTYPE.normal:
+                case MBVars.MONKEYTYPE.normal:
                     monkey.transform.localScale = new Vector3(100, 100, 100);
                     monkey.typeforce = new Vector3(0, 0);
                     monkey.rb.mass = 1.0f;
                     break;
-                case MONKEYTYPE.fat:
+                case MBVars.MONKEYTYPE.fat:
                     monkey.transform.localScale = new Vector3(125, 125, 125);
                     monkey.rb.mass = 1.5f;
                     break;
-                case MONKEYTYPE.rocket:
+                case MBVars.MONKEYTYPE.rocket:
                     monkey.transform.localScale = new Vector3(75, 75, 75);
                     monkey.typeforce = new Vector3(0, monkey.rb.mass / 2);
                     monkey.rb.mass = 0.6f;
                     break;
-                case MONKEYTYPE.bomb: //nothing special for now
+                case MBVars.MONKEYTYPE.bomb: //nothing special for now
                     monkey.transform.localScale = new Vector3(100, 100, 100);
                     monkey.typeforce = new Vector3(0, 0);
                     monkey.rb.mass = 1.0f;
