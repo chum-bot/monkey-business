@@ -81,7 +81,6 @@ public class Monkey : MonoBehaviour
         if (collider.gameObject.GetComponent<Barrel>()) //no need to loop now!
         {
             Barrel hitBarrel = collider.gameObject.GetComponent<Barrel>();
-            Debug.Log($"monkey's color is {color} and barrel's color is {hitBarrel.color}");
             if (IsSorted(this, hitBarrel))
             {
                 PointManager.instance.Score((pointValue  + comboCount) * hitBarrel.scoreMultiplier);

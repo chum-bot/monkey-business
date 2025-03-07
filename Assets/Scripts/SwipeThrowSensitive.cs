@@ -115,14 +115,13 @@ public class SwipeThrowSensitive : MonoBehaviour
         if (dragTime > 0 && dragVector.magnitude > minSpeed / 5)
         {
             //the throwforce
-            throwforce = dragVector / dragTime * Time.deltaTime;
+            throwforce = (endPos-startPos) / dragTime * Time.deltaTime;
             //it has the direction of the dragVector
             //so it goes in the direction you dragged it
             //why didn't i lead with this.
 
-            throwforce += Camera.main.transform.forward * throwforce.magnitude; // the forward
+            throwforce.z += throwforce.magnitude; // the forward
             throwforce = throwforce.normalized * Math.Clamp(monkey.speed * ((endPos-startPos).y / Camera.main.scaledPixelHeight), minSpeed, maxSpeed);
-            Debug.Log($"{throwforce.magnitude} is our speed");
             //basically how this works is it takes the speed the player flicked and multiplies that by the monkey's speed
             //with a min and max so it doesn't fly too far
         }
@@ -132,8 +131,14 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, transform.position + throwforce);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, new Vector3(throwforce.x, transform.position.y, transform.position.z));
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(new Vector3(throwforce.x, transform.position.y, transform.position.z), new Vector3(throwforce.x, throwforce.y, transform.position.z));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(new Vector3(throwforce.x, throwforce.y, transform.position.z), throwforce);
     }
 
 }
