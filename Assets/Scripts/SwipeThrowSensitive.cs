@@ -90,7 +90,7 @@ public class SwipeThrowSensitive : MonoBehaviour
             transform.position = ray.GetPoint(enter);
         }
         //the autorelease
-        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize) 
+        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize + 1.5) 
         {
             Throw();
         }
@@ -115,19 +115,14 @@ public class SwipeThrowSensitive : MonoBehaviour
         if (dragTime > 0 && dragVector.magnitude > minSpeed / 5)
         {
             //the throwforce
-            //this is all of the old stuff but in one thing
-            //the elapsed from before was causing a bug where if you held on to it for a while and threw it
-            //it would go absolutely nowhere bc it was being divided by the time spent holding it
-            //you have no time to aim, so i added dragTime in its place
             throwforce = dragVector / dragTime * Time.deltaTime;
             //it has the direction of the dragVector
             //so it goes in the direction you dragged it
             //why didn't i lead with this.
 
-            throwforce = Camera.main.ViewportToScreenPoint(throwforce);
             throwforce += Camera.main.transform.forward * throwforce.magnitude; // the forward
-            Debug.Log($"{throwforce} is the throwforce");
-            throwforce = throwforce.normalized * Math.Clamp(dragVector.magnitude * monkey.speed, minSpeed, maxSpeed);
+            throwforce = throwforce.normalized * Math.Clamp(monkey.speed * ((endPos-startPos).y / Camera.main.scaledPixelHeight), minSpeed, maxSpeed);
+            Debug.Log($"{throwforce.magnitude} is our speed");
             //basically how this works is it takes the speed the player flicked and multiplies that by the monkey's speed
             //with a min and max so it doesn't fly too far
         }

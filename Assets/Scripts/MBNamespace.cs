@@ -132,11 +132,11 @@ namespace MBNamespace
                     break;
                 case MONKEYTYPE.fat:
                     monkey.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
-                    monkey.rb.mass = 1.5f;
+                    monkey.rb.mass = 1.3f;
                     break;
                 case MONKEYTYPE.rocket:
                     monkey.transform.localScale = new Vector3(.75f, .75f, .75f);
-                    monkey.rb.mass = 0.7f;
+                    monkey.rb.mass = 0.9f;
                     break;
                 case MONKEYTYPE.bomb: //nothing special for now
                     monkey.transform.localScale = new Vector3(1, 1, 1);

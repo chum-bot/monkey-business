@@ -47,7 +47,7 @@ public class Monkey : MonoBehaviour
         gameObject.SetActive(true);
         fullGovernmentColor = GetComponentInChildren<Renderer>().material.mainTexture.name;
         color = fullGovernmentColor.Substring(0, fullGovernmentColor.IndexOf("M"));
-        softlockTimer = 3;
+        softlockTimer = 2;
     }
 
     // Update is called once per frame
@@ -68,13 +68,12 @@ public class Monkey : MonoBehaviour
         }
         else
         {
-            softlockTimer = 3;
+            softlockTimer = 2;
         }
         if(softlockTimer <= 0)
         {
             CreateMonkey(this);
         }
-        Debug.Log(softlockTimer);
     }
 
     void OnTriggerEnter(Collider collider)
