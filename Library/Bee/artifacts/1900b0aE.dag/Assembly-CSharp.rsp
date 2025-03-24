@@ -354,9 +354,11 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.4f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scripts/Barrel.cs"
 "Assets/Scripts/DeathZone.cs"
+"Assets/Scripts/Level.cs"
 "Assets/Scripts/MBNamespace.cs"
 "Assets/Scripts/Monkey.cs"
 "Assets/Scripts/PointManager.cs"
+"Assets/Scripts/StarterPlatform.cs"
 "Assets/Scripts/SwipeThrowSensitive.cs"
 -langversion:9.0
 

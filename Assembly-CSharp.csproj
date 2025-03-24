@@ -61,7 +61,9 @@
     <Compile Include="Assets\Scripts\Monkey.cs" />
     <Compile Include="Assets\Scripts\MBNamespace.cs" />
     <Compile Include="Assets\Scripts\SwipeThrowSensitive.cs" />
+    <Compile Include="Assets\Scripts\Level.cs" />
     <Compile Include="Assets\Scripts\PointManager.cs" />
+    <Compile Include="Assets\Scripts\StarterPlatform.cs" />
     <Compile Include="Assets\Scripts\DeathZone.cs" />
     <Compile Include="Assets\Scripts\Barrel.cs" />
   </ItemGroup>

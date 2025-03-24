@@ -101,6 +101,7 @@ namespace MBNamespace
                     {
                         validTextures.Add(txtr);
                     }
+                    Debug.Log(txtr);
                 }
             }
             int randMonkeyMat = UnityEngine.Random.Range(0, validTextures.Count);
@@ -123,28 +124,27 @@ namespace MBNamespace
 
             //the stuff for the different attributes of each type
             //i can always separate this into smth else if it ends up being too big
-            switch (monkey.type)
-            {
-                case MONKEYTYPE.normal:
-                    monkey.transform.localScale = new Vector3(1, 1, 1);
-                    monkey.typeforce = new Vector3(0, 0);
-                    monkey.rb.mass = 1.0f;
-                    break;
-                case MONKEYTYPE.fat:
-                    monkey.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
-                    monkey.rb.mass = 1.3f;
-                    break;
-                case MONKEYTYPE.rocket:
-                    monkey.transform.localScale = new Vector3(.75f, .75f, .75f);
-                    monkey.rb.mass = 0.8f;
-                    break;
-                case MONKEYTYPE.bomb: //nothing special for now
-                    monkey.transform.localScale = new Vector3(1, 1, 1);
-                    monkey.typeforce = new Vector3(0, 0);
-                    monkey.rb.mass = 1.0f;
-                    break;
-            }
-            Debug.Log($"{monkey.type} monkey incoming!");
+            //switch (monkey.type)
+            //{
+            //    case MONKEYTYPE.normal:
+            //        monkey.transform.localScale = new Vector3(1, 1, 1);
+            //        monkey.typeforce = new Vector3(0, 0);
+            //        monkey.rb.mass = 1.0f;
+            //        break;
+            //    case MONKEYTYPE.fat:
+            //        monkey.transform.localScale = new Vector3(1.25f, 1.25f, 1.25f);
+            //        monkey.rb.mass = 1.3f;
+            //        break;
+            //    case MONKEYTYPE.rocket:
+            //        monkey.transform.localScale = new Vector3(.75f, .75f, .75f);
+            //        monkey.rb.mass = 0.8f;
+            //        break;
+            //    case MONKEYTYPE.bomb: //nothing special for now
+            //        monkey.transform.localScale = new Vector3(1, 1, 1);
+            //        monkey.typeforce = new Vector3(0, 0);
+            //        monkey.rb.mass = 1.0f;
+            //        break;
+            //}
         }
 
         //the antigrab
@@ -152,21 +152,22 @@ namespace MBNamespace
         //i actually just gave the monkey a fly parameter that serves the same purpose but
         //i ran into an issue where i could only pick it up once
         //didn't want to bother fixing it so i just added this back
-        public static bool AntiGrab(Monkey monkey)
-        {
-            Array deathZones = FindObjectsOfType<DeathZone>();
-            float closestStartZDist = 999999;
-            Vector3 closestStart = Vector3.zero;
-            foreach (DeathZone deathZone in deathZones)
-            {
-                float startXDist = Math.Abs(deathZone.start.z);
-                if (startXDist < closestStartZDist)
-                {
-                    closestStartZDist = startXDist;
-                    closestStart = deathZone.start;
-                }
-            }
-            return closestStart.z > monkey.transform.position.z;
-        }
+        //UNUSED
+        //public static bool AntiGrab(Monkey monkey)
+        //{
+        //    Array deathZones = FindObjectsOfType<DeathZone>();
+        //    float closestStartZDist = 999999;
+        //    Vector3 closestStart = Vector3.zero;
+        //    foreach (DeathZone deathZone in deathZones)
+        //    {
+        //        float startXDist = Math.Abs(deathZone.start.z);
+        //        if (startXDist < closestStartZDist)
+        //        {
+        //            closestStartZDist = startXDist;
+        //            closestStart = deathZone.start;
+        //        }
+        //    }
+        //    return closestStart.z > monkey.transform.position.z;
+        //}
     }
 }

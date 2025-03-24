@@ -36,7 +36,7 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     void Start()
     {
-        Physics.gravity *= 2;
+        Physics.gravity *= 4;
         rb = GetComponent<Rigidbody>();
         monkey = GetComponent<Monkey>();
         lastMousePos = Input.mousePosition;
@@ -48,7 +48,7 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (AntiGrab(monkey) || !monkey.fly) //the fat monkey might unironically be too fat for this lol
+        if (!monkey.fly)
         {
             throwforce = Vector3.zero;
             isDragging = true;
@@ -90,7 +90,7 @@ public class SwipeThrowSensitive : MonoBehaviour
             transform.position = ray.GetPoint(enter);
         }
         //the autorelease
-        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize + 1.5) 
+        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize + 16) 
         {
             Throw();
         }
@@ -112,33 +112,43 @@ public class SwipeThrowSensitive : MonoBehaviour
 
         //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
         //the dragSpeed check is so it doesn't go flying when you release it and have only been barely moving
-        if (dragTime > 0 && dragVector.magnitude > minSpeed / 5)
+        if (dragTime > 0 && dragVector.magnitude > minSpeed / 10)
         {
             //the throwforce
             throwforce = (endPos-startPos) / dragTime * Time.deltaTime;
             //it has the direction of the dragVector
             //so it goes in the direction you dragged it
-            //why didn't i lead with this.
+
+            float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 150, 400);
 
             throwforce.z += throwforce.magnitude; // the forward
-            throwforce = throwforce.normalized * Math.Clamp(monkey.speed * ((endPos-startPos).y / Camera.main.scaledPixelHeight), minSpeed, maxSpeed);
-            //basically how this works is it takes the speed the player flicked and multiplies that by the monkey's speed
+            throwforce = throwforce.normalized * Math.Clamp(
+                monkey.speed * 
+                (dragHeight / Camera.main.scaledPixelHeight) * 
+                (monkey.dragSensitivity * dragVector.magnitude), 
+                minSpeed, maxSpeed);
+            Debug.Log(dragHeight);
+            //basically how this works is
+            //it takes the base speed of the monkey and multiplies the throwforce by the height of the drag
+            //so it has that level of power
             //with a min and max so it doesn't fly too far
         }
         rb.AddForce(throwforce, ForceMode.Impulse);
-        //impulse makes it mass-based so we can change that for smth like the fat monkey
+        //impulse makes it mass-based so we can change that and have it affect the throwing
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+        Gizmos.color = Color.black;
         Gizmos.DrawLine(transform.position, transform.position + throwforce);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, new Vector3(throwforce.x, transform.position.y, transform.position.z));
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(throwforce.x, transform.position.y, transform.position.z));
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(new Vector3(throwforce.x, transform.position.y, transform.position.z), new Vector3(throwforce.x, throwforce.y, transform.position.z));
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(transform.position.x, throwforce.y, transform.position.z));
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(new Vector3(throwforce.x, throwforce.y, transform.position.z), throwforce);
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(transform.position.x, transform.position.y, throwforce.z));
     }
 
 }

@@ -20,6 +20,11 @@ public class Monkey : MonoBehaviour
     [SerializeField]
     public float speed = 1.0f;
 
+    //Use numbers in between 0.1 and 2 for this.
+    //we could let this be editable as well! for more player agency for how they want their drags to drag
+    [SerializeField]
+    public float dragSensitivity;
+
     public bool fly { get; set; } //fly! (check for when monkey is thrown, replacement for long winded antigrab stuff)
 
     public Rigidbody rb { get; set; }
@@ -47,7 +52,7 @@ public class Monkey : MonoBehaviour
         gameObject.SetActive(true);
         fullGovernmentColor = GetComponentInChildren<Renderer>().material.mainTexture.name;
         color = fullGovernmentColor.Substring(0, fullGovernmentColor.IndexOf("M"));
-        softlockTimer = 2;
+        softlockTimer = 1.5f;
     }
 
     // Update is called once per frame
@@ -62,13 +67,13 @@ public class Monkey : MonoBehaviour
         //man why does onbecameinvisible not work anymore
         //i guess this would be better in the long run bc it works in case we'd want more cameras
 
-        if (fly && rb.velocity.magnitude == 0)
+        if (fly && rb.velocity.magnitude <= 0.5)
         {
             softlockTimer -= Time.deltaTime;
         }
         else
         {
-            softlockTimer = 2;
+            softlockTimer = 1.5f;
         }
         if(softlockTimer <= 0)
         {
@@ -83,11 +88,11 @@ public class Monkey : MonoBehaviour
             Barrel hitBarrel = collider.gameObject.GetComponent<Barrel>();
             if (IsSorted(this, hitBarrel))
             {
-                PointManager.instance.Score((pointValue  + comboCount) * hitBarrel.scoreMultiplier);
+                PointManager.instance.Score((pointValue + comboCount) * hitBarrel.scoreMultiplier);
             }
             else
             {
-                PointManager.instance.Score(-pointValue);
+                PointManager.instance.Score(-5);
                 comboCount = 0;
             }
             CreateMonkey(this);
