@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using static MBNamespace.MBFunctions;
+using UnityEngine.UI;
 
 public class SwipeThrowSensitive : MonoBehaviour
 {
@@ -12,11 +13,16 @@ public class SwipeThrowSensitive : MonoBehaviour
     [SerializeField]
     float minSpeed = 10.0f;
 
+    [SerializeField]
+    float minHeight = 240;
+    [SerializeField]
+    float maxHeight = 450;
+
     private Vector3 startPos;
     private Vector3 endPos;
     private bool isDragging;
 
-    //
+
     private Vector3 lastMousePos;
     private Vector3 dragVector;
 
@@ -90,7 +96,7 @@ public class SwipeThrowSensitive : MonoBehaviour
             transform.position = ray.GetPoint(enter);
         }
         //the autorelease
-        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize + 16) 
+        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize + 18) 
         {
             Throw();
         }
@@ -111,7 +117,6 @@ public class SwipeThrowSensitive : MonoBehaviour
         endPos = Input.mousePosition;
 
         //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
-        //the dragSpeed check is so it doesn't go flying when you release it and have only been barely moving
         if (dragTime > 0)
         {
             //the throwforce
@@ -119,19 +124,29 @@ public class SwipeThrowSensitive : MonoBehaviour
             //it has the direction of the dragVector
             //so it goes in the direction you dragged it
 
-            float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 50, 400);
+            float minHeightScale = 677 / minHeight;
+            float maxHeightScale = 677 / maxHeight;
+
+            float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 
+                Camera.main.scaledPixelHeight / minHeightScale,
+                Camera.main.scaledPixelHeight / maxHeightScale);
+
+            monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
 
             throwforce.z += throwforce.magnitude; // the forward
             throwforce = throwforce.normalized * Math.Clamp(
-                monkey.speed * 
-                (dragHeight / Camera.main.scaledPixelHeight) * 
-                (monkey.dragSensitivity * dragVector.magnitude), 
+                monkey.speed * dragHeight / Camera.main.scaledPixelHeight, 
                 minSpeed, maxSpeed);
-            Debug.Log(dragHeight);
             //basically how this works is
             //it takes the base speed of the monkey and multiplies the throwforce by the height of the drag
             //so it has that level of power
             //with a min and max so it doesn't fly too far
+            Debug.Log($"FLY MONKEY! " +
+                $"WITH A SPEED OF {monkey.speed} " +
+                $"AND A DRAG HEIGHT OF {dragHeight}, " +
+                $"YOU SHALL REACH YOUR DESTINATION WITH A MAGNITUDE OF " +
+                $"{monkey.speed * dragHeight / Camera.main.scaledPixelHeight}.");
+            Debug.Log(Camera.main.scaledPixelHeight);
         }
         rb.AddForce(throwforce, ForceMode.Impulse);
         //impulse makes it mass-based so we can change that and have it affect the throwing

@@ -33,7 +33,6 @@ public class PointManager : MonoBehaviour
     {
         if(addedScore > 0) comboCount++;
         else comboCount = 0;
-        Debug.Log(comboCount);
         if (comboCount >= 2)
         {
             comboText.gameObject.SetActive (true);

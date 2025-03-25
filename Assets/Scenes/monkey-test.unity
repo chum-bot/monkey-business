@@ -304,19 +304,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.268295
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 29.268291
+      value: 32.46
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 29.268293
+      value: 28.4
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.0634146
+      value: 5.25
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -353,6 +353,10 @@ PrefabInstance:
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -89.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6225878251037697697, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: scoreMultiplier
@@ -1526,11 +1530,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 24.390245
+      value: 26.5
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 24.39024
+      value: 25.83
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.z
@@ -2776,11 +2780,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 24.390245
+      value: 26.5
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 24.39024
+      value: 25.83
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.z
@@ -2965,11 +2969,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 24.390245
+      value: 26.5
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 24.39024
+      value: 25.83
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.z
@@ -3410,19 +3414,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.268295
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 29.268291
+      value: 32.3
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 29.268293
+      value: 28.4
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.0634146
+      value: -5.25
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3459,6 +3463,10 @@ PrefabInstance:
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -89.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6225878251037697697, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: scoreMultiplier
@@ -4148,15 +4156,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.268295
+      value: 33
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 29.268291
+      value: 32.4
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 29.268293
+      value: 28.4
       objectReference: {fileID: 0}
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4197,6 +4205,10 @@ PrefabInstance:
     - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -89.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4434843605720071878, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6225878251037697697, guid: 0070e8b802c383242925418bf416f9c9, type: 3}
       propertyPath: scoreMultiplier
@@ -4389,7 +4401,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1072607325708302215, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 1601146177811465386, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: m_Height
@@ -4457,11 +4469,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2369339528266759970, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: maxSpeed
-      value: 42
+      value: 95
       objectReference: {fileID: 0}
     - target: {fileID: 2369339528266759970, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: minSpeed
-      value: 22
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369339528266759970, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
+      propertyPath: maxHeight
+      value: 420
+      objectReference: {fileID: 0}
+    - target: {fileID: 2369339528266759970, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
+      propertyPath: dragHeightDebug
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3192317241937491984, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: m_LocalScale.x
@@ -4489,11 +4509,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6114615552067681134, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: speed
-      value: 80
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6114615552067681134, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: dragSensitivity
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6852125044262869605, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: m_Materials.Array.data[0]

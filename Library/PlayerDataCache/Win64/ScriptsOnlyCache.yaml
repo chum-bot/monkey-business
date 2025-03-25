@@ -3,8 +3,10 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - Barrel
     - DeathZone
+    - Level
     - Monkey
     - PointManager
+    - StarterPlatform
     - SwipeThrowSensitive
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -62,23 +64,27 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2290}
     - Class: 114
-      Script: {instanceID: 2566}
+      Script: {instanceID: 2386}
     - Class: 114
-      Script: {instanceID: 2770}
+      Script: {instanceID: 2568}
     - Class: 114
-      Script: {instanceID: 3606}
+      Script: {instanceID: 2772}
     - Class: 114
-      Script: {instanceID: 3798}
+      Script: {instanceID: 3608}
     - Class: 114
-      Script: {instanceID: 4748}
+      Script: {instanceID: 3800}
     - Class: 114
-      Script: {instanceID: 5008}
+      Script: {instanceID: 4676}
     - Class: 114
-      Script: {instanceID: 5226}
+      Script: {instanceID: 4752}
     - Class: 114
-      Script: {instanceID: 5528}
+      Script: {instanceID: 5012}
     - Class: 114
-      Script: {instanceID: 5998}
+      Script: {instanceID: 5230}
+    - Class: 114
+      Script: {instanceID: 5532}
+    - Class: 114
+      Script: {instanceID: 6002}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -200,6 +206,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: DeathZone
+  - hash:
+      serializedVersion: 2
+      Hash: 751e5bae2a317288c2ab58d66687092b
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: StarterPlatform
   - hash:
       serializedVersion: 2
       Hash: 751e5bae2a317288c2ab58d66687092b
@@ -551,6 +563,12 @@ ScriptsOnlyBuild:
   - hash:
       serializedVersion: 2
       Hash: 751e5bae2a317288c2ab58d66687092b
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: Level
+  - hash:
+      serializedVersion: 2
+      Hash: 751e5bae2a317288c2ab58d66687092b
     assemblyName: Unity.VisualScripting.Core
     namespaceName: Unity.VisualScripting
     className: UnityOnEndDragMessageListener
@@ -562,7 +580,7 @@ ScriptsOnlyBuild:
     className: UnityOnTransformChildrenChangedMessageListener
   - hash:
       serializedVersion: 2
-      Hash: bbc9981bf47c006ce46a10a69b2d36c6
+      Hash: bd747cfa811cedc080596a781b0e189c
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: SwipeThrowSensitive

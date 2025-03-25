@@ -101,7 +101,6 @@ namespace MBNamespace
                     {
                         validTextures.Add(txtr);
                     }
-                    Debug.Log(txtr);
                 }
             }
             int randMonkeyMat = UnityEngine.Random.Range(0, validTextures.Count);
