@@ -4461,7 +4461,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2369339528266759970, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: minSpeed
-      value: 25
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 3192317241937491984, guid: 727b4e110eabf6c4581bcefdb790951e, type: 3}
       propertyPath: m_LocalScale.x

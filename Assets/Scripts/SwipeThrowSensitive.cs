@@ -112,14 +112,14 @@ public class SwipeThrowSensitive : MonoBehaviour
 
         //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
         //the dragSpeed check is so it doesn't go flying when you release it and have only been barely moving
-        if (dragTime > 0 && dragVector.magnitude > minSpeed / 10)
+        if (dragTime > 0)
         {
             //the throwforce
             throwforce = (endPos-startPos) / dragTime * Time.deltaTime;
             //it has the direction of the dragVector
             //so it goes in the direction you dragged it
 
-            float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 150, 400);
+            float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 50, 400);
 
             throwforce.z += throwforce.magnitude; // the forward
             throwforce = throwforce.normalized * Math.Clamp(
