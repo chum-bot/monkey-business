@@ -17,15 +17,13 @@ public class Monkey : MonoBehaviour
     //i think it'd be cool if each monkey had point values, we could manipulate that
     //solid gold monkey worth 20 thousand points or smth silly
 
-    [SerializeField]
-    public float speed = 1.0f;
-
     public bool fly { get; set; } //fly! (check for when monkey is thrown, replacement for long winded antigrab stuff)
 
     public Rigidbody rb { get; set; }
 
     public MONKEYTYPE type;
     public string color { get; set; }
+    public float speed { get; set; }
 
     private string fullGovernmentColor;
 
@@ -70,7 +68,7 @@ public class Monkey : MonoBehaviour
         {
             softlockTimer = 1.5f;
         }
-        if(softlockTimer <= 0)
+        if (softlockTimer <= 0)
         {
             CreateMonkey(this);
         }

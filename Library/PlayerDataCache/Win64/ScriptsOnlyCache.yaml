@@ -70,21 +70,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2772}
     - Class: 114
-      Script: {instanceID: 3608}
+      Script: {instanceID: 3798}
     - Class: 114
-      Script: {instanceID: 3800}
+      Script: {instanceID: 4674}
     - Class: 114
-      Script: {instanceID: 4676}
+      Script: {instanceID: 5008}
     - Class: 114
-      Script: {instanceID: 4752}
+      Script: {instanceID: 5226}
     - Class: 114
-      Script: {instanceID: 5012}
+      Script: {instanceID: 5528}
     - Class: 114
-      Script: {instanceID: 5230}
+      Script: {instanceID: 5998}
     - Class: 114
-      Script: {instanceID: 5532}
+      Script: {instanceID: 7770}
     - Class: 114
-      Script: {instanceID: 6002}
+      Script: {instanceID: 7774}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -418,12 +418,6 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionExit2DMessageListener
   - hash:
       serializedVersion: 2
-      Hash: a8cc5bf65aa14ef1a459cd4f6e2f43de
-    assemblyName: Assembly-CSharp
-    namespaceName: 
-    className: Monkey
-  - hash:
-      serializedVersion: 2
       Hash: f6831ac80ec81c5d5b370c0ed0fee997
     assemblyName: Unity.VisualScripting.Flow
     namespaceName: Unity.VisualScripting
@@ -578,12 +572,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualScripting.Core
     namespaceName: Unity.VisualScripting
     className: UnityOnTransformChildrenChangedMessageListener
-  - hash:
-      serializedVersion: 2
-      Hash: bd747cfa811cedc080596a781b0e189c
-    assemblyName: Assembly-CSharp
-    namespaceName: 
-    className: SwipeThrowSensitive
   - hash:
       serializedVersion: 2
       Hash: 751e5bae2a317288c2ab58d66687092b
@@ -974,6 +962,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualScripting.Core
     namespaceName: Unity.VisualScripting
     className: UnityOnSliderValueChangedMessageListener
+  - hash:
+      serializedVersion: 2
+      Hash: 0772e668ee6b31e7eab51802ea8cac0e
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: Monkey
+  - hash:
+      serializedVersion: 2
+      Hash: bd747cfa811cedc080596a781b0e189c
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: SwipeThrowSensitive
   platform: 19
   scenePathNames:
   - Assets/Scenes/monkey-test.unity

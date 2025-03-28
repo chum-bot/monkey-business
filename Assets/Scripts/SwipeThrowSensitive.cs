@@ -120,33 +120,36 @@ public class SwipeThrowSensitive : MonoBehaviour
         if (dragTime > 0)
         {
             //the throwforce
-            throwforce = (endPos-startPos) / dragTime * Time.deltaTime;
-            //it has the direction of the dragVector
+            //it has the direction of the vector you dragged in
             //so it goes in the direction you dragged it
+            throwforce = (endPos-startPos) / dragTime * Time.deltaTime;
+
+            //when testing i found that
+            //with some specific values at the specific camera height i was testing with in the builder (677)
+            //the lowest power throw always sinks the front, and the highest power throw always sinks the back (with good enough aim ofc)
+            //so in order to scale that to the window i took those values and the relationship between them
+            //and used them down here
 
             float minHeightScale = 677 / minHeight;
             float maxHeightScale = 677 / maxHeight;
+
+            //min and max height are used as the "range" of throwing heights to use
+            //these are not the exact mins and maxes, those are calced in the clamp below
+            //these scales are the ratio between the specific values i found with the 677 builder window
+            //they are now scaled to the height of the window so the ratio remains for all of them
 
             float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 
                 Camera.main.scaledPixelHeight / minHeightScale,
                 Camera.main.scaledPixelHeight / maxHeightScale);
 
+            //monkey speed scaling based on the max speed
+            //for those crisp perfect back sinks
             monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
 
             throwforce.z += throwforce.magnitude; // the forward
             throwforce = throwforce.normalized * Math.Clamp(
                 monkey.speed * dragHeight / Camera.main.scaledPixelHeight, 
                 minSpeed, maxSpeed);
-            //basically how this works is
-            //it takes the base speed of the monkey and multiplies the throwforce by the height of the drag
-            //so it has that level of power
-            //with a min and max so it doesn't fly too far
-            Debug.Log($"FLY MONKEY! " +
-                $"WITH A SPEED OF {monkey.speed} " +
-                $"AND A DRAG HEIGHT OF {dragHeight}, " +
-                $"YOU SHALL REACH YOUR DESTINATION WITH A MAGNITUDE OF " +
-                $"{monkey.speed * dragHeight / Camera.main.scaledPixelHeight}.");
-            Debug.Log(Camera.main.scaledPixelHeight);
         }
         rb.AddForce(throwforce, ForceMode.Impulse);
         //impulse makes it mass-based so we can change that and have it affect the throwing
