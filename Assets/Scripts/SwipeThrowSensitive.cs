@@ -22,22 +22,27 @@ public class SwipeThrowSensitive : MonoBehaviour
     private Vector3 endPos;
     private bool isDragging;
 
-
     private Vector3 lastMousePos;
     private Vector3 dragVector;
 
-    //this is literally only here for the gizmos
-    //i wouldn't define it outside of here otherwise
+    // this is literally only here for the gizmos
+    // i wouldn't define it outside of here otherwise
     private Vector3 throwforce;
 
     private Monkey monkey;
     private Rigidbody rb;
 
+    // new variables for ragdoll support:
+    private bool ragdoll;      // indicates whether this is a ragdoll (true if no Monkey component)
+    private bool fly;          // used for ragdoll fly state
+    private Rigidbody[] rbs;   // holds all rigidbodies (ragdoll parts)
+    private Vector3 init;      // initial screen position for ragdoll objects
+
     private Plane dragPlane;
 
-    //dragTime!
-    //tracks how long the player is actively moving the monkey
-    //so we can get the speed at which they flicked it
+    // dragTime!
+    // tracks how long the player is actively moving the object
+    // so we can get the speed at which they flicked it
     private float dragTime;
 
     void Start()
@@ -48,57 +53,98 @@ public class SwipeThrowSensitive : MonoBehaviour
         lastMousePos = Input.mousePosition;
         dragVector = Vector3.zero;
         dragTime = 0;
-        monkey.fly = false;
+        if (monkey != null)
+        {
+            monkey.fly = false;
+        }
+        else
+        {
+            fly = false;
+            // if this is a ragdoll, get every rigidbody on the root object
+            rbs = transform.root.GetComponentsInChildren<Rigidbody>();
+        }
+        ragdoll = (monkey == null);
     }
-
 
     void OnMouseDown()
     {
-        if (!monkey.fly)
+        // only allow pick-up if not already flying
+        if (monkey != null)
         {
-            throwforce = Vector3.zero;
-            isDragging = true;
+            if (monkey.fly) return;
+        }
+        else
+        {
+            if (fly) return;
+        }
 
+        throwforce = Vector3.zero;
+        isDragging = true;
+
+        if (ragdoll)
+        {
+            // make all ragdoll bodies kinematic
+            foreach (Rigidbody body in rbs)
+            {
+                body.isKinematic = true;
+            }
+            dragPlane = new Plane(Camera.main.transform.forward, transform.root.position);
+        }
+        else
+        {
             rb.isKinematic = true;
             dragPlane = new Plane(Camera.main.transform.forward, transform.position);
-
-            startPos = Input.mousePosition;
-            dragVector = Vector3.zero;
-            dragTime = 0;
         }
+
+        startPos = Input.mousePosition;
+        // for ragdoll, store the initial screen position
+        if (ragdoll)
+        {
+            init = startPos;
+        }
+        dragVector = Vector3.zero;
+        dragTime = 0;
     }
 
     void OnMouseDrag()
     {
         if (!isDragging) return;
 
-        //this changes every frame you're holding it
-        //honestly this is more like dragDistance, but endPos - startPos is the true drag distance so
+        // update drag vector based on the current and last mouse positions
         dragVector = Input.mousePosition - lastMousePos;
-        if(dragVector.magnitude > 0.0f)
+        if (dragVector.magnitude > 0.0f)
         {
-            //dragTime counts up when you're dragging
             dragTime += Time.deltaTime;
         }
         else
         {
-            //and resets when you're not
             dragTime = 0;
-            startPos = Input.mousePosition; 
-            //the startPos reset makes it so you can move the cursor from the starting position to aim
-            //and you don't have to start from where you first grabbed the monkey
+            startPos = Input.mousePosition;
         }
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (dragPlane.Raycast(ray, out float enter))
         {
-            transform.position = ray.GetPoint(enter);
+            Vector3 targetpos = ray.GetPoint(enter);
+            if (ragdoll)
+            {
+                // move the entire ragdoll using the root position
+                transform.root.position = targetpos;
+            }
+            else
+            {
+                transform.position = targetpos;
+            }
         }
-        //the autorelease
-        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize + 18) 
+        // autorelease if there is a drag and the object's height is above a threshold
+        if (dragVector.magnitude > 0)
         {
-            Throw();
+            float posY = ragdoll ? transform.root.position.y : transform.position.y;
+            if (posY > Camera.main.orthographicSize + 18)
+            {
+                Throw();
+            }
         }
         lastMousePos = Input.mousePosition;
     }
@@ -112,58 +158,90 @@ public class SwipeThrowSensitive : MonoBehaviour
     void Throw()
     {
         isDragging = false;
-        monkey.fly = true;
-        rb.isKinematic = false;
+        if (monkey != null)
+        {
+            monkey.fly = true;
+        }
+        else
+        {
+            fly = true;
+        }
+        if (ragdoll)
+        {
+            // revert all ragdoll bodies to non-kinematic so physics resumes
+            foreach (Rigidbody body in rbs)
+            {
+                body.isKinematic = false;
+            }
+        }
+        else
+        {
+            rb.isKinematic = false;
+        }
         endPos = Input.mousePosition;
 
-        //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
         if (dragTime > 0)
         {
-            //the throwforce
-            throwforce = (endPos-startPos) / dragTime * Time.deltaTime;
-            //it has the direction of the dragVector
-            //so it goes in the direction you dragged it
-
+            // calculate force based on drag distance and time
+            throwforce = (endPos - startPos) / dragTime * Time.deltaTime;
             float minHeightScale = 677 / minHeight;
             float maxHeightScale = 677 / maxHeight;
-
-            float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 
+            // use monkey.initPos if available; otherwise use the stored initial position
+            float baseY = (monkey != null) ? monkey.initPos.y : init.y;
+            float dragHeight = Math.Clamp((endPos - new Vector3(0, baseY, 0)).y,
                 Camera.main.scaledPixelHeight / minHeightScale,
                 Camera.main.scaledPixelHeight / maxHeightScale);
 
-            monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
+            float spd;
+            if (monkey != null)
+            {
+                monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
+                spd = monkey.speed;
+            }
+            else
+            {
+                // for ragdolls, use a similar speed calculation
+                spd = maxSpeed * (677f / maxHeight);
+            }
 
-            throwforce.z += throwforce.magnitude; // the forward
+            // add forward momentum and clamp the force magnitude
+            throwforce.z += throwforce.magnitude;
             throwforce = throwforce.normalized * Math.Clamp(
-                monkey.speed * dragHeight / Camera.main.scaledPixelHeight, 
+                spd * dragHeight / Camera.main.scaledPixelHeight,
                 minSpeed, maxSpeed);
-            //basically how this works is
-            //it takes the base speed of the monkey and multiplies the throwforce by the height of the drag
-            //so it has that level of power
-            //with a min and max so it doesn't fly too far
-            Debug.Log($"FLY MONKEY! " +
-                $"WITH A SPEED OF {monkey.speed} " +
-                $"AND A DRAG HEIGHT OF {dragHeight}, " +
-                $"YOU SHALL REACH YOUR DESTINATION WITH A MAGNITUDE OF " +
-                $"{monkey.speed * dragHeight / Camera.main.scaledPixelHeight}.");
+
+            Debug.Log($"FLY OBJECT! WITH A SPEED OF {spd} AND A DRAG HEIGHT OF {dragHeight}, YOU SHALL REACH YOUR DESTINATION WITH A MAGNITUDE OF {spd * dragHeight / Camera.main.scaledPixelHeight}.");
             Debug.Log(Camera.main.scaledPixelHeight);
         }
-        rb.AddForce(throwforce, ForceMode.Impulse);
-        //impulse makes it mass-based so we can change that and have it affect the throwing
+
+        // apply the calculated impulse force
+        if (ragdoll)
+        {
+            foreach (Rigidbody body in rbs)
+            {
+                body.AddForce(throwforce, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            rb.AddForce(throwforce, ForceMode.Impulse);
+        }
     }
 
     private void OnDrawGizmos()
     {
+        // choose the proper position for gizmos based on object type
+        Vector3 curPos = ragdoll ? transform.root.position : transform.position;
+        Vector3 curVel = ragdoll ? Vector3.zero : rb.velocity;
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
+        Gizmos.DrawLine(curPos, curPos + curVel);
         Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position, transform.position + throwforce);
+        Gizmos.DrawLine(curPos, curPos + throwforce);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(throwforce.x, transform.position.y, transform.position.z));
+        Gizmos.DrawLine(curPos, curPos + new Vector3(throwforce.x, curPos.y, curPos.z));
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(transform.position.x, throwforce.y, transform.position.z));
+        Gizmos.DrawLine(curPos, curPos + new Vector3(curPos.x, throwforce.y, curPos.z));
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(transform.position.x, transform.position.y, throwforce.z));
+        Gizmos.DrawLine(curPos, curPos + new Vector3(curPos.x, curPos.y, throwforce.z));
     }
-
 }
