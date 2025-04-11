@@ -30,7 +30,7 @@ public class PointManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        colorPulseTime = 4f;
+        colorPulseTime = 0.5f;
         addedScoreText.text = "";
         scoreText.text = $"Score: {score}";
         comboText.gameObject.SetActive(false);

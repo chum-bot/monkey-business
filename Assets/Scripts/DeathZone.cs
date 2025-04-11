@@ -19,7 +19,7 @@ public class DeathZone : MonoBehaviour
         if (collision.gameObject.GetComponent<Monkey>())
         {
             Monkey monkey = collision.gameObject.GetComponent<Monkey>();
-            PointManager.instance.Score(-monkey.pointValue);
+            PointManager.instance.Score(-monkey.pointValue * 5);
             CreateMonkey(monkey);
             return;
         }

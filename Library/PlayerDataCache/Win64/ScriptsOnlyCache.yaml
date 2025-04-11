@@ -70,21 +70,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2772}
     - Class: 114
-      Script: {instanceID: 3798}
+      Script: {instanceID: 3608}
     - Class: 114
-      Script: {instanceID: 4674}
+      Script: {instanceID: 3800}
     - Class: 114
-      Script: {instanceID: 5008}
+      Script: {instanceID: 4676}
     - Class: 114
-      Script: {instanceID: 5226}
+      Script: {instanceID: 4752}
     - Class: 114
-      Script: {instanceID: 5528}
+      Script: {instanceID: 5012}
     - Class: 114
-      Script: {instanceID: 5998}
+      Script: {instanceID: 5230}
     - Class: 114
-      Script: {instanceID: 7770}
+      Script: {instanceID: 5532}
     - Class: 114
-      Script: {instanceID: 7774}
+      Script: {instanceID: 6002}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -418,6 +418,12 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionExit2DMessageListener
   - hash:
       serializedVersion: 2
+      Hash: 0772e668ee6b31e7eab51802ea8cac0e
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: Monkey
+  - hash:
+      serializedVersion: 2
       Hash: f6831ac80ec81c5d5b370c0ed0fee997
     assemblyName: Unity.VisualScripting.Flow
     namespaceName: Unity.VisualScripting
@@ -574,6 +580,12 @@ ScriptsOnlyBuild:
     className: UnityOnTransformChildrenChangedMessageListener
   - hash:
       serializedVersion: 2
+      Hash: bd747cfa811cedc080596a781b0e189c
+    assemblyName: Assembly-CSharp
+    namespaceName: 
+    className: SwipeThrowSensitive
+  - hash:
+      serializedVersion: 2
       Hash: 751e5bae2a317288c2ab58d66687092b
     assemblyName: Unity.VisualScripting.Core
     namespaceName: Unity.VisualScripting
@@ -640,7 +652,7 @@ ScriptsOnlyBuild:
     className: TMP_FontAsset
   - hash:
       serializedVersion: 2
-      Hash: b6934c1bb25a4f2b476a8499cf41bee0
+      Hash: 240131e73d012eebf84617971570c124
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: PointManager
@@ -962,18 +974,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualScripting.Core
     namespaceName: Unity.VisualScripting
     className: UnityOnSliderValueChangedMessageListener
-  - hash:
-      serializedVersion: 2
-      Hash: 0772e668ee6b31e7eab51802ea8cac0e
-    assemblyName: Assembly-CSharp
-    namespaceName: 
-    className: Monkey
-  - hash:
-      serializedVersion: 2
-      Hash: bd747cfa811cedc080596a781b0e189c
-    assemblyName: Assembly-CSharp
-    namespaceName: 
-    className: SwipeThrowSensitive
   platform: 19
   scenePathNames:
   - Assets/Scenes/monkey-test.unity
