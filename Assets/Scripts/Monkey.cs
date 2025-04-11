@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using static MBNamespace.MBFunctions;
 using static MBNamespace.MBVars;
 using System;
+using Unity.VisualScripting;
 
 public class Monkey : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Monkey : MonoBehaviour
     public bool fly { get; set; } //fly! (check for when monkey is thrown, replacement for long winded antigrab stuff)
 
     public Rigidbody rb { get; set; }
+    public Rigidbody[] bodies { get; set; }
 
     public MONKEYTYPE type;
     public string color { get; set; }
@@ -39,13 +41,14 @@ public class Monkey : MonoBehaviour
         //we can change this later once the models have more stuff going on
         //i'm taking directly from it now so i don't have to hardcode colors in
         //and we can easily make new ones w/ materials
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponentInChildren<Rigidbody>();
         initPos = rb.position;
         typeforce = new Vector3(0, 0, 0);
         gameObject.SetActive(true);
         fullGovernmentColor = GetComponentInChildren<Renderer>().material.mainTexture.name;
         color = fullGovernmentColor.Substring(0, fullGovernmentColor.IndexOf("M"));
         softlockTimer = 1.5f;
+        bodies = GetComponentsInChildren<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -56,7 +59,7 @@ public class Monkey : MonoBehaviour
         //(it's just some added forces for each type)
         //(from the type attributes in MBNamespace)
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-        if (!GeometryUtility.TestPlanesAABB(planes, GetComponent<Renderer>().bounds)) CreateMonkey(this);
+        if (!GeometryUtility.TestPlanesAABB(planes, GetComponentInChildren<Renderer>().bounds)) CreateMonkey(this);
         //man why does onbecameinvisible not work anymore
         //i guess this would be better in the long run bc it works in case we'd want more cameras
 

@@ -4,14 +4,15 @@ using System;
 using UnityEngine;
 using static MBNamespace.MBFunctions;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class SwipeThrowSensitive : MonoBehaviour
 {
     [SerializeField]
-    float maxSpeed = 100f;
+    float maxSpeed = 95f;
 
     [SerializeField]
-    float minSpeed = 10.0f;
+    float minSpeed = 65f;
 
     [SerializeField]
     float minHeight = 240;
@@ -22,6 +23,7 @@ public class SwipeThrowSensitive : MonoBehaviour
     private Vector3 endPos;
     private bool isDragging;
 
+    private Plane dragPlane;
 
     private Vector3 lastMousePos;
     private Vector3 dragVector;
@@ -33,8 +35,6 @@ public class SwipeThrowSensitive : MonoBehaviour
     private Monkey monkey;
     private Rigidbody rb;
 
-    private Plane dragPlane;
-
     //dragTime!
     //tracks how long the player is actively moving the monkey
     //so we can get the speed at which they flicked it
@@ -43,24 +43,35 @@ public class SwipeThrowSensitive : MonoBehaviour
     void Start()
     {
         Physics.gravity *= 4;
-        rb = GetComponent<Rigidbody>();
-        monkey = GetComponent<Monkey>();
+        rb = GetComponentInChildren<Rigidbody>();
+        monkey = GetComponentInParent<Monkey>();
         lastMousePos = Input.mousePosition;
         dragVector = Vector3.zero;
+        dragPlane = new Plane(Camera.main.transform.forward, transform.position);
         dragTime = 0;
         monkey.fly = false;
     }
 
-
     void OnMouseDown()
     {
+        Debug.Log(monkey.bodies);
         if (!monkey.fly)
         {
             throwforce = Vector3.zero;
             isDragging = true;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                foreach (Rigidbody body in monkey.bodies)
+                {
+                    if (hit.collider == body)
+                    {
+                        rb = body;
+                    }
+                }
+            }
 
             rb.isKinematic = true;
-            dragPlane = new Plane(Camera.main.transform.forward, transform.position);
 
             startPos = Input.mousePosition;
             dragVector = Vector3.zero;
@@ -88,7 +99,6 @@ public class SwipeThrowSensitive : MonoBehaviour
             //the startPos reset makes it so you can move the cursor from the starting position to aim
             //and you don't have to start from where you first grabbed the monkey
         }
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (dragPlane.Raycast(ray, out float enter))
