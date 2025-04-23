@@ -22,4 +22,24 @@ public class Barrel : MonoBehaviour
         fullGovernmentColor = GetComponent<Renderer>().material.name;
         color = fullGovernmentColor.Substring(0, fullGovernmentColor.IndexOf(" "));
     }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.GetComponentInParent<Monkey>()) //no need to loop now!
+        {
+            Monkey hitMonkey = collider.gameObject.GetComponentInParent<Monkey>();
+            if (MBFunctions.IsSorted(hitMonkey, this))
+            {
+                Debug.Log("please.");
+                PointManager.instance.Score((hitMonkey.pointValue + MBVars.comboCount) * scoreMultiplier);
+            }
+            else
+            {
+                PointManager.instance.Score(-5);
+                MBVars.comboCount = 0;
+            }
+            MBFunctions.CreateMonkey(hitMonkey);
+            return;
+        }
+    }
 }

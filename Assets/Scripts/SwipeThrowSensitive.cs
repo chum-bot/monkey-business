@@ -47,61 +47,28 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     void Start()
     {
-        Physics.gravity *= 4;
-        rb = GetComponent<Rigidbody>();
-        monkey = GetComponent<Monkey>();
+        monkey = GetComponentInParent<Monkey>();
         lastMousePos = Input.mousePosition;
         dragVector = Vector3.zero;
         dragTime = 0;
-        if (monkey != null)
-        {
-            monkey.fly = false;
-        }
-        else
-        {
-            fly = false;
-            // if this is a ragdoll, get every rigidbody on the root object
-            rbs = transform.root.GetComponentsInChildren<Rigidbody>();
-        }
-        ragdoll = (monkey == null);
+        monkey.fly = false;
     }
 
     void OnMouseDown()
     {
         // only allow pick-up if not already flying
-        if (monkey != null)
-        {
-            if (monkey.fly) return;
-        }
-        else
-        {
-            if (fly) return;
-        }
-
+        if (monkey.fly) return;
         throwforce = Vector3.zero;
         isDragging = true;
 
-        if (ragdoll)
-        {
-            // make all ragdoll bodies kinematic
-            foreach (Rigidbody body in rbs)
-            {
-                body.isKinematic = true;
-            }
-            dragPlane = new Plane(Camera.main.transform.forward, transform.root.position);
-        }
-        else
+        // make all ragdoll bodies kinematic
+        foreach (Rigidbody rb in monkey.rbs)
         {
             rb.isKinematic = true;
-            dragPlane = new Plane(Camera.main.transform.forward, transform.position);
         }
+        dragPlane = new Plane(Camera.main.transform.forward, monkey.transform.position);
 
         startPos = Input.mousePosition;
-        // for ragdoll, store the initial screen position
-        if (ragdoll)
-        {
-            init = startPos;
-        }
         dragVector = Vector3.zero;
         dragTime = 0;
     }
@@ -126,21 +93,13 @@ public class SwipeThrowSensitive : MonoBehaviour
 
         if (dragPlane.Raycast(ray, out float enter))
         {
-            Vector3 targetpos = ray.GetPoint(enter);
-            if (ragdoll)
-            {
-                // move the entire ragdoll using the root position
-                transform.root.position = targetpos;
-            }
-            else
-            {
-                transform.position = targetpos;
-            }
+            transform.position = ray.GetPoint(enter);
+
         }
         // autorelease if there is a drag and the object's height is above a threshold
         if (dragVector.magnitude > 0)
         {
-            float posY = ragdoll ? transform.root.position.y : transform.position.y;
+            float posY = monkey.transform.position.y;
             if (posY > Camera.main.orthographicSize + 18)
             {
                 Throw();
@@ -158,25 +117,11 @@ public class SwipeThrowSensitive : MonoBehaviour
     void Throw()
     {
         isDragging = false;
-        if (monkey != null)
+        monkey.fly = true;
+        // revert all ragdoll bodies to non-kinematic so physics resumes
+        foreach (Rigidbody body in monkey.rbs)
         {
-            monkey.fly = true;
-        }
-        else
-        {
-            fly = true;
-        }
-        if (ragdoll)
-        {
-            // revert all ragdoll bodies to non-kinematic so physics resumes
-            foreach (Rigidbody body in rbs)
-            {
-                body.isKinematic = false;
-            }
-        }
-        else
-        {
-            rb.isKinematic = false;
+            body.isKinematic = false;
         }
         endPos = Input.mousePosition;
 
@@ -187,69 +132,41 @@ public class SwipeThrowSensitive : MonoBehaviour
             float minHeightScale = 677 / minHeight;
             float maxHeightScale = 677 / maxHeight;
             // use monkey.initPos if available; otherwise use the stored initial position
-            float baseY = (monkey != null) ? monkey.initPos.y : init.y;
-            float dragHeight = Math.Clamp((endPos - new Vector3(0, baseY, 0)).y,
+            float baseY = monkey.initPos.y;
+            float dragHeight = Math.Clamp(endPos.y - baseY,
                 Camera.main.scaledPixelHeight / minHeightScale,
                 Camera.main.scaledPixelHeight / maxHeightScale);
 
-            float spd;
-            if (monkey != null)
-            {
                 monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
-                spd = monkey.speed;
-            }
-            else
-            {
-                // for ragdolls, use a similar speed calculation
-                spd = maxSpeed * (677f / maxHeight);
-            }
+            
 
             // add forward momentum and clamp the force magnitude
             throwforce.z += throwforce.magnitude;
             throwforce = throwforce.normalized * Math.Clamp(
-                spd * dragHeight / Camera.main.scaledPixelHeight,
+                monkey.speed * dragHeight / Camera.main.scaledPixelHeight,
                 minSpeed, maxSpeed);
 
-            Debug.Log($"FLY OBJECT! WITH A SPEED OF {spd} AND A DRAG HEIGHT OF {dragHeight}, YOU SHALL REACH YOUR DESTINATION WITH A MAGNITUDE OF {spd * dragHeight / Camera.main.scaledPixelHeight}.");
-            Debug.Log(Camera.main.scaledPixelHeight);
+            Debug.Log($"FLY OBJECT! WITH A SPEED OF {monkey.speed} AND A DRAG HEIGHT OF {dragHeight}, YOU SHALL REACH YOUR DESTINATION WITH A MAGNITUDE OF {monkey.speed * dragHeight / Camera.main.scaledPixelHeight}.");
         }
 
         // apply the calculated impulse force
-        if (ragdoll)
-        {
-            foreach (Rigidbody body in rbs)
+            foreach (Rigidbody body in monkey.rbs)
             {
                 body.AddForce(throwforce, ForceMode.Impulse);
             }
-        }
-        else
-        {
-            rb.AddForce(throwforce, ForceMode.Impulse);
-        }
     }
 
     private void OnDrawGizmos()
     {
         // choose the proper position for gizmos based on object type
-        Vector3 curPos = ragdoll ? transform.root.position : transform.position;
-        Vector3 curVel = ragdoll ? Vector3.zero : rb.velocity;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(curPos, curPos + curVel);
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine(curPos, curPos + throwforce);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(curPos, curPos + new Vector3(throwforce.x, curPos.y, curPos.z));
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(curPos, curPos + new Vector3(curPos.x, throwforce.y, curPos.z));
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(curPos, curPos + new Vector3(curPos.x, curPos.y, throwforce.z));
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(monkey.initPos, 1f);
     }
 
-  
+    //i do not understand why this is needed
+    //but it works so
     void Update()
     {
-        if (ragdoll)
-        {
             bool down = Input.GetMouseButtonDown(0);
             bool up = Input.GetMouseButtonUp(0);
             bool hold = Input.GetMouseButton(0);
@@ -259,8 +176,8 @@ public class SwipeThrowSensitive : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    
-                    if (Array.Exists(rbs, rb => rb == hit.rigidbody) && !fly)
+
+                    if (Array.Exists(monkey.rbs, rb => rb == hit.rigidbody))
                     {
                         OnMouseDown();
                     }
@@ -274,6 +191,6 @@ public class SwipeThrowSensitive : MonoBehaviour
             {
                 OnMouseUp();
             }
-        }
+        
     }
 }
