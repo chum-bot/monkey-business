@@ -13,6 +13,8 @@ public class PointManager : MonoBehaviour
 
     private float colorPulseTime;
 
+    private float scoreCD;
+
     [SerializeField]
     Text scoreText;
 
@@ -30,6 +32,7 @@ public class PointManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        scoreCD = 0.3f;
         colorPulseTime = 0.5f;
         addedScoreText.text = "";
         scoreText.text = $"Score: {score}";
@@ -38,41 +41,50 @@ public class PointManager : MonoBehaviour
 
     public void Score(int addedScore)
     {
-        score += addedScore;
-        if (score < 0) score = 0; //no negative scoring
+        if(scoreCD <= 0)
+        {
+            score += addedScore;
+            if (score < 0) score = 0; //no negative scoring
 
-        scoreText.text = $"Score: {score}";
-        if (addedScore > 50)
-        {
-            addedScoreText.text = $"+{addedScore}!!";
-            StartCoroutine(TextPulse(new Color(250f / 255f, 215f / 255f, 36f / 255f)));
-            comboCount++;
-        }
-        else if (addedScore > 0)
-        {
-            addedScoreText.text = $"+{addedScore}";
-            StartCoroutine(TextPulse(Color.green));
-            comboCount++;
-        }
-        else if (addedScore < 0)
-        {
-            StartCoroutine(TextPulse(Color.red));
-            comboCount = 0;
+            scoreText.text = $"Score: {score}";
+            if (addedScore > 50)
+            {
+                addedScoreText.text = $"+{addedScore}!!";
+                StartCoroutine(TextPulse(new Color(250f / 255f, 215f / 255f, 36f / 255f)));
+                comboCount++;
+            }
+            else if (addedScore > 0)
+            {
+                addedScoreText.text = $"+{addedScore}";
+                StartCoroutine(TextPulse(Color.green));
+                comboCount++;
+            }
+            else if (addedScore < 0)
+            {
+                addedScoreText.text = $"{addedScore}";
+                StartCoroutine(TextPulse(Color.red));
+                comboCount = 0;
 
+            }
+            if (comboCount >= 2)
+            {
+                comboText.gameObject.SetActive(true);
+                comboText.text = $"{comboCount} COMBO!!";
+            }
+            else
+            {
+                comboText.gameObject.SetActive(false);
+            }
         }
-        if (comboCount >= 2)
-        {
-            comboText.gameObject.SetActive (true);
-            comboText.text = $"{comboCount} COMBO!!";
-        }
-        else
-        {
-            comboText.gameObject.SetActive(false);
-        }
+        scoreCD = 0.2f;
+    }
+
+    private void Update()
+    {
+        scoreCD -= Time.deltaTime;
     }
     public IEnumerator TextPulse(Color pulseColor)
     {
-
         float t = colorPulseTime;
         while (t > 0)
         {

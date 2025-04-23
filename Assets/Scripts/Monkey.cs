@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using static MBNamespace.MBFunctions;
 using static MBNamespace.MBVars;
 using System;
-using Unity.VisualScripting;
 
 public class Monkey : MonoBehaviour
 {
@@ -18,21 +17,48 @@ public class Monkey : MonoBehaviour
     //i think it'd be cool if each monkey had point values, we could manipulate that
     //solid gold monkey worth 20 thousand points or smth silly
 
+    [SerializeField]
+    public float speed = 1.0f;
+
     public bool fly { get; set; } //fly! (check for when monkey is thrown, replacement for long winded antigrab stuff)
 
-    public Rigidbody rb { get; set; }
-    public Rigidbody[] bodies { get; set; }
+    public Rigidbody[] rbs { get; set; }
 
     public MONKEYTYPE type;
     public string color { get; set; }
-    public float speed { get; set; }
 
     private string fullGovernmentColor;
 
     private float softlockTimer;
 
-    public Vector3 initPos { get; set; }
+    public Dictionary<Rigidbody, Vector3> rbInitPos;
+
+    //so when you grab the monkey all its pieces are spaced out an it doesn't scrunch up
+    public Dictionary<Rigidbody, Vector3> rbPosDiff;
+
+    public Vector3 truePosition { get; set; }
     public Vector3 typeforce { get; set; }
+
+    //getting the average positon of all the rigidbodies in the ragdoll
+    //so i have a singular point to reference for the monkey's initPos
+    //actually completely unused lol, but i feel like it'd be useful
+    public Vector3 AverageRBPos(Rigidbody[] positions)
+    {
+        Vector3 avg = Vector3.zero;
+        foreach (Rigidbody rb in positions)
+        {
+            avg += rb.position;
+        }
+        return avg / positions.Length;
+    }
+
+    public void UpdateRBRelations()
+    {
+        foreach(Rigidbody rb in rbs)
+        {
+            rbPosDiff[rb] = rb.position - truePosition;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -41,61 +67,52 @@ public class Monkey : MonoBehaviour
         //we can change this later once the models have more stuff going on
         //i'm taking directly from it now so i don't have to hardcode colors in
         //and we can easily make new ones w/ materials
-        rb = GetComponentInChildren<Rigidbody>();
-        initPos = rb.position;
+        rbs = GetComponentsInChildren<Rigidbody>();
+        rbInitPos = new Dictionary<Rigidbody, Vector3>();
+        rbPosDiff = new Dictionary<Rigidbody, Vector3>();
+        truePosition = AverageRBPos(rbs);
+        foreach (Rigidbody rb in rbs)
+        {
+            rb.mass *= 1.6f;
+            rbInitPos[rb] = rb.position;
+            rbPosDiff[rb] = rb.position - truePosition;
+        }
         typeforce = new Vector3(0, 0, 0);
         gameObject.SetActive(true);
         fullGovernmentColor = GetComponentInChildren<Renderer>().material.mainTexture.name;
         color = fullGovernmentColor.Substring(0, fullGovernmentColor.IndexOf("M"));
         softlockTimer = 1.5f;
-        bodies = GetComponentsInChildren<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb.AddForce(typeforce);
+        truePosition = AverageRBPos(rbs);
+        foreach (Rigidbody rb in rbs)
+        {
+            rb.AddForce(typeforce);
+            if (fly && rb.velocity.magnitude <= 2)
+            {
+                softlockTimer -= Time.deltaTime;
+            }
+            else
+            {
+                softlockTimer = 1.5f;
+            }
+        }
+            if (softlockTimer <= 0)
+            {
+                CreateMonkey(this);
+            }
         //the monkeys harness the power of the typeforce...
         //(it's just some added forces for each type)
         //(from the type attributes in MBNamespace)
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-        if (!GeometryUtility.TestPlanesAABB(planes, GetComponentInChildren<Renderer>().bounds)) CreateMonkey(this);
+        if (!GeometryUtility.TestPlanesAABB(planes, GetComponent<Renderer>().bounds)) CreateMonkey(this);
         //man why does onbecameinvisible not work anymore
         //i guess this would be better in the long run bc it works in case we'd want more cameras
 
-        if (fly && rb.velocity.magnitude <= 2)
-        {
-            softlockTimer -= Time.deltaTime;
-        }
-        else
-        {
-            softlockTimer = 1.5f;
-        }
-        if (softlockTimer <= 0)
-        {
-            CreateMonkey(this);
-        }
     }
-
-    void OnTriggerEnter(Collider collider)
-    {
-        if (collider.gameObject.GetComponent<Barrel>()) //no need to loop now!
-        {
-            Barrel hitBarrel = collider.gameObject.GetComponent<Barrel>();
-            if (IsSorted(this, hitBarrel))
-            {
-                PointManager.instance.Score((pointValue + comboCount) * hitBarrel.scoreMultiplier);
-            }
-            else
-            {
-                PointManager.instance.Score(-5);
-                comboCount = 0;
-            }
-            CreateMonkey(this);
-            return;
-        }
-    }
-
     //so you don't softlock if it rolls off screen
     //this is now entirely unnecessary because it literally can't roll off screen (there are walls)
     void OnBecameInvisible()

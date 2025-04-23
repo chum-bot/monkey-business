@@ -1,18 +1,17 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
 using static MBNamespace.MBFunctions;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 public class SwipeThrowSensitive : MonoBehaviour
 {
     [SerializeField]
-    float maxSpeed = 95f;
+    float maxSpeed = 100f;
 
     [SerializeField]
-    float minSpeed = 65f;
+    float minSpeed = 10.0f;
 
     [SerializeField]
     float minHeight = 240;
@@ -23,92 +22,84 @@ public class SwipeThrowSensitive : MonoBehaviour
     private Vector3 endPos;
     private bool isDragging;
 
-    private Plane dragPlane;
-
     private Vector3 lastMousePos;
     private Vector3 dragVector;
 
-    //this is literally only here for the gizmos
-    //i wouldn't define it outside of here otherwise
+    // this is literally only here for the gizmos
+    // i wouldn't define it outside of here otherwise
     private Vector3 throwforce;
 
     private Monkey monkey;
-    private Rigidbody rb;
 
-    //dragTime!
-    //tracks how long the player is actively moving the monkey
-    //so we can get the speed at which they flicked it
+    private Plane dragPlane;
+
+    // dragTime!
+    // tracks how long the player is actively moving the object
+    // so we can get the speed at which they flicked it
     private float dragTime;
 
     void Start()
     {
-        Physics.gravity *= 4;
-        rb = GetComponentInChildren<Rigidbody>();
         monkey = GetComponentInParent<Monkey>();
         lastMousePos = Input.mousePosition;
         dragVector = Vector3.zero;
-        dragPlane = new Plane(Camera.main.transform.forward, transform.position);
         dragTime = 0;
         monkey.fly = false;
     }
 
     void OnMouseDown()
     {
-        Debug.Log(monkey.bodies);
-        if (!monkey.fly)
+        // only allow pick-up if not already flying
+        if (monkey.fly) return;
+        throwforce = Vector3.zero;
+        isDragging = true;
+
+        // make all ragdoll bodies kinematic
+        foreach (Rigidbody rb in monkey.rbs)
         {
-            throwforce = Vector3.zero;
-            isDragging = true;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                foreach (Rigidbody body in monkey.bodies)
-                {
-                    if (hit.collider == body)
-                    {
-                        rb = body;
-                    }
-                }
-            }
-
             rb.isKinematic = true;
-
-            startPos = Input.mousePosition;
-            dragVector = Vector3.zero;
-            dragTime = 0;
         }
+        dragPlane = new Plane(Camera.main.transform.forward, monkey.transform.position);
+
+        startPos = Input.mousePosition;
+        dragVector = Vector3.zero;
+        dragTime = 0;
     }
 
     void OnMouseDrag()
     {
         if (!isDragging) return;
 
-        //this changes every frame you're holding it
-        //honestly this is more like dragDistance, but endPos - startPos is the true drag distance so
+        // update drag vector based on the current and last mouse positions
         dragVector = Input.mousePosition - lastMousePos;
-        if(dragVector.magnitude > 0.0f)
+        if (dragVector.magnitude > 0.0f)
         {
-            //dragTime counts up when you're dragging
             dragTime += Time.deltaTime;
         }
         else
         {
-            //and resets when you're not
             dragTime = 0;
-            startPos = Input.mousePosition; 
-            //the startPos reset makes it so you can move the cursor from the starting position to aim
-            //and you don't have to start from where you first grabbed the monkey
+            startPos = Input.mousePosition;
         }
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (dragPlane.Raycast(ray, out float enter))
         {
-            transform.position = ray.GetPoint(enter);
+            monkey.UpdateRBRelations();
+            foreach(Rigidbody rb in monkey.rbs)
+            {
+                rb.transform.position = ray.GetPoint(enter) + monkey.rbPosDiff[rb];
+            }
         }
-        //the autorelease
-        if (dragVector.magnitude > 0 && transform.position.y > Camera.main.orthographicSize + 18) 
+        // autorelease if there is a drag and the object's height is above a threshold
+        if (dragVector.magnitude > 0)
         {
-            Throw();
+            float posY = monkey.transform.position.y;
+            if (posY > Camera.main.orthographicSize + 18)
+            {
+                Throw();
+            }
         }
         lastMousePos = Input.mousePosition;
     }
@@ -123,60 +114,77 @@ public class SwipeThrowSensitive : MonoBehaviour
     {
         isDragging = false;
         monkey.fly = true;
-        rb.isKinematic = false;
+        // revert all ragdoll bodies to non-kinematic so physics resumes
         endPos = Input.mousePosition;
+        foreach (Rigidbody body in monkey.rbs)
+        {
+            body.isKinematic = false;
+        }
 
-        //only goes if the dragTime isn't 0 so it doesn't give you a NaN error later
         if (dragTime > 0)
         {
-            //the throwforce
-            //it has the direction of the vector you dragged in
-            //so it goes in the direction you dragged it
-            throwforce = (endPos-startPos) / dragTime * Time.deltaTime;
-
-            //when testing i found that
-            //with some specific values at the specific camera height i was testing with in the builder (677)
-            //the lowest power throw always sinks the front, and the highest power throw always sinks the back (with good enough aim ofc)
-            //so in order to scale that to the window i took those values and the relationship between them
-            //and used them down here
-
+            // calculate force based on drag distance and time
+            throwforce = (endPos - startPos) / dragTime * Time.deltaTime;
             float minHeightScale = 677 / minHeight;
             float maxHeightScale = 677 / maxHeight;
 
-            //min and max height are used as the "range" of throwing heights to use
-            //these are not the exact mins and maxes, those are calced in the clamp below
-            //these scales are the ratio between the specific values i found with the 677 builder window
-            //they are now scaled to the height of the window so the ratio remains for all of them
-
-            float dragHeight = Math.Clamp((endPos - monkey.initPos).y, 
+            float dragHeight = Math.Clamp(endPos.y - startPos.y,
                 Camera.main.scaledPixelHeight / minHeightScale,
                 Camera.main.scaledPixelHeight / maxHeightScale);
 
-            //monkey speed scaling based on the max speed
-            //for those crisp perfect back sinks
-            monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
+                monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
+            
 
-            throwforce.z += throwforce.magnitude; // the forward
+            // add forward momentum and clamp the force magnitude
+            throwforce.z += throwforce.magnitude;
             throwforce = throwforce.normalized * Math.Clamp(
-                monkey.speed * dragHeight / Camera.main.scaledPixelHeight, 
+                monkey.speed * dragHeight / Camera.main.scaledPixelHeight,
                 minSpeed, maxSpeed);
+
+            Debug.Log($"FLY OBJECT! WITH A SPEED OF {monkey.speed} AND A DRAG HEIGHT OF {dragHeight}, YOU SHALL REACH YOUR DESTINATION WITH A MAGNITUDE OF {monkey.speed * dragHeight / Camera.main.scaledPixelHeight}.");
         }
-        rb.AddForce(throwforce, ForceMode.Impulse);
-        //impulse makes it mass-based so we can change that and have it affect the throwing
+
+        // apply the calculated impulse force
+            foreach (Rigidbody body in monkey.rbs)
+            {
+                body.AddForce(throwforce, ForceMode.Impulse);
+            }
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, transform.position + rb.velocity);
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position, transform.position + throwforce);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(throwforce.x, transform.position.y, transform.position.z));
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(transform.position.x, throwforce.y, transform.position.z));
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(transform.position.x, transform.position.y, throwforce.z));
+        Gizmos.DrawSphere(monkey.truePosition, 1f);
     }
 
+    //i do not understand why this is needed
+    //but it works so
+    void Update()
+    {
+            bool down = Input.GetMouseButtonDown(0);
+            bool up = Input.GetMouseButtonUp(0);
+            bool hold = Input.GetMouseButton(0);
+
+            if (down)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+
+                    if (Array.Exists(monkey.rbs, rb => rb == hit.rigidbody))
+                    {
+                        OnMouseDown();
+                    }
+                }
+            }
+            if (hold && isDragging)
+            {
+                OnMouseDrag();
+            }
+            if (up && isDragging)
+            {
+                OnMouseUp();
+            }
+        
+    }
 }
