@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -243,5 +243,37 @@ public class SwipeThrowSensitive : MonoBehaviour
         Gizmos.DrawLine(curPos, curPos + new Vector3(curPos.x, throwforce.y, curPos.z));
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(curPos, curPos + new Vector3(curPos.x, curPos.y, throwforce.z));
+    }
+
+  
+    void Update()
+    {
+        if (ragdoll)
+        {
+            bool down = Input.GetMouseButtonDown(0);
+            bool up = Input.GetMouseButtonUp(0);
+            bool hold = Input.GetMouseButton(0);
+
+            if (down)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    
+                    if (Array.Exists(rbs, rb => rb == hit.rigidbody) && !fly)
+                    {
+                        OnMouseDown();
+                    }
+                }
+            }
+            if (hold && isDragging)
+            {
+                OnMouseDrag();
+            }
+            if (up && isDragging)
+            {
+                OnMouseUp();
+            }
+        }
     }
 }
