@@ -31,13 +31,17 @@ public class Monkey : MonoBehaviour
 
     private float softlockTimer;
 
-    public Vector3 initPos { get; set; }
-
     public Dictionary<Rigidbody, Vector3> rbInitPos;
+
+    //so when you grab the monkey all its pieces are spaced out an it doesn't scrunch up
+    public Dictionary<Rigidbody, Vector3> rbPosDiff;
+
+    public Vector3 truePosition { get; set; }
     public Vector3 typeforce { get; set; }
 
     //getting the average positon of all the rigidbodies in the ragdoll
     //so i have a singular point to reference for the monkey's initPos
+    //actually completely unused lol, but i feel like it'd be useful
     public Vector3 AverageRBPos(Rigidbody[] positions)
     {
         Vector3 avg = Vector3.zero;
@@ -46,6 +50,14 @@ public class Monkey : MonoBehaviour
             avg += rb.position;
         }
         return avg / positions.Length;
+    }
+
+    public void UpdateRBRelations()
+    {
+        foreach(Rigidbody rb in rbs)
+        {
+            rbPosDiff[rb] = rb.position - truePosition;
+        }
     }
 
     // Start is called before the first frame update
@@ -57,12 +69,14 @@ public class Monkey : MonoBehaviour
         //and we can easily make new ones w/ materials
         rbs = GetComponentsInChildren<Rigidbody>();
         rbInitPos = new Dictionary<Rigidbody, Vector3>();
+        rbPosDiff = new Dictionary<Rigidbody, Vector3>();
+        truePosition = AverageRBPos(rbs);
         foreach (Rigidbody rb in rbs)
         {
-            rb.mass *= 1.4f;
+            rb.mass *= 1.5f;
             rbInitPos[rb] = rb.position;
+            rbPosDiff[rb] = rb.position - truePosition;
         }
-        initPos = AverageRBPos(rbs);
         typeforce = new Vector3(0, 0, 0);
         gameObject.SetActive(true);
         fullGovernmentColor = GetComponentInChildren<Renderer>().material.mainTexture.name;
@@ -73,7 +87,8 @@ public class Monkey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach(Rigidbody rb in rbs)
+        truePosition = AverageRBPos(rbs);
+        foreach (Rigidbody rb in rbs)
         {
             rb.AddForce(typeforce);
             if (fly && rb.velocity.magnitude <= 2)

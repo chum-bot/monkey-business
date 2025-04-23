@@ -112,15 +112,15 @@ namespace MBNamespace
         public static void CreateMonkey(Monkey monkey)
         {
             monkey.type = (MONKEYTYPE)UnityEngine.Random.Range(0, types.Length);
-
-            monkey.GetComponentInChildren<Renderer>().material.SetTexture("_MainTex", RandomizedMonkeyTexture());
-            string monkeyTexColor = monkey.GetComponentInChildren<Renderer>().material.mainTexture.name;
-            monkey.color = monkeyTexColor.Substring(0, monkeyTexColor.IndexOf("M"));
             foreach(Rigidbody rb in monkey.rbs)
             {
                 rb.position = monkey.rbInitPos[rb];
                 rb.velocity = Vector3.zero;
             }
+
+            monkey.GetComponentInChildren<Renderer>().material.SetTexture("_MainTex", RandomizedMonkeyTexture());
+            string monkeyTexColor = monkey.GetComponentInChildren<Renderer>().material.mainTexture.name;
+            monkey.color = monkeyTexColor.Substring(0, monkeyTexColor.IndexOf("M"));
             monkey.transform.rotation = new Quaternion(0, 0, 0, 1);
             monkey.fly = false;
 

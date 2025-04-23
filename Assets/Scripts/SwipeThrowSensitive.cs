@@ -30,13 +30,6 @@ public class SwipeThrowSensitive : MonoBehaviour
     private Vector3 throwforce;
 
     private Monkey monkey;
-    private Rigidbody rb;
-
-    // new variables for ragdoll support:
-    private bool ragdoll;      // indicates whether this is a ragdoll (true if no Monkey component)
-    private bool fly;          // used for ragdoll fly state
-    private Rigidbody[] rbs;   // holds all rigidbodies (ragdoll parts)
-    private Vector3 init;      // initial screen position for ragdoll objects
 
     private Plane dragPlane;
 
@@ -93,9 +86,10 @@ public class SwipeThrowSensitive : MonoBehaviour
 
         if (dragPlane.Raycast(ray, out float enter))
         {
+            monkey.UpdateRBRelations();
             foreach(Rigidbody rb in monkey.rbs)
             {
-                rb.transform.position = ray.GetPoint(enter);
+                rb.transform.position = ray.GetPoint(enter) + monkey.rbPosDiff[rb];
             }
         }
         // autorelease if there is a drag and the object's height is above a threshold
@@ -121,11 +115,11 @@ public class SwipeThrowSensitive : MonoBehaviour
         isDragging = false;
         monkey.fly = true;
         // revert all ragdoll bodies to non-kinematic so physics resumes
+        endPos = Input.mousePosition;
         foreach (Rigidbody body in monkey.rbs)
         {
             body.isKinematic = false;
         }
-        endPos = Input.mousePosition;
 
         if (dragTime > 0)
         {
@@ -134,7 +128,7 @@ public class SwipeThrowSensitive : MonoBehaviour
             float minHeightScale = 677 / minHeight;
             float maxHeightScale = 677 / maxHeight;
 
-            float dragHeight = Math.Clamp(endPos.y - monkey.initPos.y,
+            float dragHeight = Math.Clamp(endPos.y - startPos.y,
                 Camera.main.scaledPixelHeight / minHeightScale,
                 Camera.main.scaledPixelHeight / maxHeightScale);
 
@@ -159,9 +153,8 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // choose the proper position for gizmos based on object type
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(monkey.initPos, 1f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(monkey.truePosition, 1f);
     }
 
     //i do not understand why this is needed
