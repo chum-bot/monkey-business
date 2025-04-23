@@ -94,7 +94,6 @@ public class SwipeThrowSensitive : MonoBehaviour
         if (dragPlane.Raycast(ray, out float enter))
         {
             transform.position = ray.GetPoint(enter);
-
         }
         // autorelease if there is a drag and the object's height is above a threshold
         if (dragVector.magnitude > 0)
@@ -131,9 +130,8 @@ public class SwipeThrowSensitive : MonoBehaviour
             throwforce = (endPos - startPos) / dragTime * Time.deltaTime;
             float minHeightScale = 677 / minHeight;
             float maxHeightScale = 677 / maxHeight;
-            // use monkey.initPos if available; otherwise use the stored initial position
-            float baseY = monkey.initPos.y;
-            float dragHeight = Math.Clamp(endPos.y - baseY,
+
+            float dragHeight = Math.Clamp(endPos.y - monkey.initPos.y,
                 Camera.main.scaledPixelHeight / minHeightScale,
                 Camera.main.scaledPixelHeight / maxHeightScale);
 

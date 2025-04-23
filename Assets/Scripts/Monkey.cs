@@ -54,6 +54,10 @@ public class Monkey : MonoBehaviour
         //i'm taking directly from it now so i don't have to hardcode colors in
         //and we can easily make new ones w/ materials
         rbs = GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody rb in rbs)
+        {
+            rb.mass *= 1.4f;
+        }
         initPos = AverageRBPos(rbs);
         typeforce = new Vector3(0, 0, 0);
         gameObject.SetActive(true);

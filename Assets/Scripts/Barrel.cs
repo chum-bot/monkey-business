@@ -30,13 +30,12 @@ public class Barrel : MonoBehaviour
             Monkey hitMonkey = collider.gameObject.GetComponentInParent<Monkey>();
             if (MBFunctions.IsSorted(hitMonkey, this))
             {
-                Debug.Log("please.");
                 PointManager.instance.Score((hitMonkey.pointValue + MBVars.comboCount) * scoreMultiplier);
+                Debug.Log(PointManager.instance.score);
             }
             else
             {
                 PointManager.instance.Score(-5);
-                MBVars.comboCount = 0;
             }
             MBFunctions.CreateMonkey(hitMonkey);
             return;
