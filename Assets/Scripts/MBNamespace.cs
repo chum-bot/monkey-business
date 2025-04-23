@@ -116,9 +116,9 @@ namespace MBNamespace
             monkey.GetComponentInChildren<Renderer>().material.SetTexture("_MainTex", RandomizedMonkeyTexture());
             string monkeyTexColor = monkey.GetComponentInChildren<Renderer>().material.mainTexture.name;
             monkey.color = monkeyTexColor.Substring(0, monkeyTexColor.IndexOf("M"));
-            monkey.transform.position = monkey.initPos;
             foreach(Rigidbody rb in monkey.rbs)
             {
+                rb.position = monkey.rbInitPos[rb];
                 rb.velocity = Vector3.zero;
             }
             monkey.transform.rotation = new Quaternion(0, 0, 0, 1);

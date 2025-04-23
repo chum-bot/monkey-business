@@ -32,6 +32,8 @@ public class Monkey : MonoBehaviour
     private float softlockTimer;
 
     public Vector3 initPos { get; set; }
+
+    public Dictionary<Rigidbody, Vector3> rbInitPos;
     public Vector3 typeforce { get; set; }
 
     //getting the average positon of all the rigidbodies in the ragdoll
@@ -54,9 +56,11 @@ public class Monkey : MonoBehaviour
         //i'm taking directly from it now so i don't have to hardcode colors in
         //and we can easily make new ones w/ materials
         rbs = GetComponentsInChildren<Rigidbody>();
+        rbInitPos = new Dictionary<Rigidbody, Vector3>();
         foreach (Rigidbody rb in rbs)
         {
             rb.mass *= 1.4f;
+            rbInitPos[rb] = rb.position;
         }
         initPos = AverageRBPos(rbs);
         typeforce = new Vector3(0, 0, 0);

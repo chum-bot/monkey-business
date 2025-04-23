@@ -93,7 +93,10 @@ public class SwipeThrowSensitive : MonoBehaviour
 
         if (dragPlane.Raycast(ray, out float enter))
         {
-            transform.position = ray.GetPoint(enter);
+            foreach(Rigidbody rb in monkey.rbs)
+            {
+                rb.transform.position = ray.GetPoint(enter);
+            }
         }
         // autorelease if there is a drag and the object's height is above a threshold
         if (dragVector.magnitude > 0)
