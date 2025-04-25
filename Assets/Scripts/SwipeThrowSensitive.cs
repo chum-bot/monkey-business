@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using static MBNamespace.MBFunctions;
+using static MBNamespace.MBVars;
 using UnityEngine.UI;
 
 public class SwipeThrowSensitive : MonoBehaviour
@@ -49,65 +50,73 @@ public class SwipeThrowSensitive : MonoBehaviour
 
     void OnMouseDown()
     {
-        // only allow pick-up if not already flying
-        if (monkey.fly) return;
-        throwforce = Vector3.zero;
-        isDragging = true;
-
-        // make all ragdoll bodies kinematic
-        foreach (Rigidbody rb in monkey.rbs)
+        if (SceneHandler.instance.gameState == GAMESTATE.game)
         {
-            rb.isKinematic = true;
-        }
-        dragPlane = new Plane(Camera.main.transform.forward, monkey.transform.position);
+            // only allow pick-up if not already flying
+            if (monkey.fly) return;
+            throwforce = Vector3.zero;
+            isDragging = true;
 
-        startPos = Input.mousePosition;
-        dragVector = Vector3.zero;
-        dragTime = 0;
+            // make all ragdoll bodies kinematic
+            foreach (Rigidbody rb in monkey.rbs)
+            {
+                rb.isKinematic = true;
+            }
+            dragPlane = new Plane(Camera.main.transform.forward, monkey.transform.position);
+
+            startPos = Input.mousePosition;
+            dragVector = Vector3.zero;
+            dragTime = 0;
+        }
     }
 
     void OnMouseDrag()
     {
-        if (!isDragging) return;
-
-        // update drag vector based on the current and last mouse positions
-        dragVector = Input.mousePosition - lastMousePos;
-        if (dragVector.magnitude > 0.0f)
+        if (SceneHandler.instance.gameState == GAMESTATE.game)
         {
-            dragTime += Time.deltaTime;
-        }
-        else
-        {
-            dragTime = 0;
-            startPos = Input.mousePosition;
-        }
+            if (!isDragging) return;
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (dragPlane.Raycast(ray, out float enter))
-        {
-            monkey.UpdateRBRelations();
-            foreach(Rigidbody rb in monkey.rbs)
+            // update drag vector based on the current and last mouse positions
+            dragVector = Input.mousePosition - lastMousePos;
+            if (dragVector.magnitude > 0.0f)
             {
-                rb.transform.position = ray.GetPoint(enter) + monkey.rbPosDiff[rb];
+                dragTime += Time.deltaTime;
             }
-        }
-        // autorelease if there is a drag and the object's height is above a threshold
-        if (dragVector.magnitude > 0)
-        {
-            float posY = monkey.transform.position.y;
-            if (posY > Camera.main.orthographicSize + 18)
+            else
             {
-                Throw();
+                dragTime = 0;
+                startPos = Input.mousePosition;
             }
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (dragPlane.Raycast(ray, out float enter))
+            {
+                foreach (Rigidbody rb in monkey.rbs)
+                {
+                    rb.transform.position = ray.GetPoint(enter);
+                }
+            }
+            // autorelease if there is a drag and the object's height is above a threshold
+            if (dragVector.magnitude > 0)
+            {
+                if (monkey.truePosition.y > Camera.main.orthographicSize + 12)
+                {
+                    Throw();
+                }
+            }
+            lastMousePos = Input.mousePosition;
         }
-        lastMousePos = Input.mousePosition;
     }
 
     void OnMouseUp()
     {
-        if (!isDragging) return;
-        Throw();
+        if (SceneHandler.instance.gameState == GAMESTATE.game)
+        {
+            if (!isDragging) return;
+            Throw();
+
+        }
     }
 
     void Throw()
@@ -132,8 +141,8 @@ public class SwipeThrowSensitive : MonoBehaviour
                 Camera.main.scaledPixelHeight / minHeightScale,
                 Camera.main.scaledPixelHeight / maxHeightScale);
 
-                monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
-            
+            monkey.speed = maxSpeed / (Camera.main.scaledPixelHeight / maxHeightScale / Camera.main.scaledPixelHeight);
+
 
             // add forward momentum and clamp the force magnitude
             throwforce.z += throwforce.magnitude;
@@ -145,46 +154,41 @@ public class SwipeThrowSensitive : MonoBehaviour
         }
 
         // apply the calculated impulse force
-            foreach (Rigidbody body in monkey.rbs)
-            {
-                body.AddForce(throwforce, ForceMode.Impulse);
-            }
+        foreach (Rigidbody body in monkey.rbs)
+        {
+            body.AddForce(throwforce, ForceMode.Impulse);
+        }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(monkey.truePosition, 1f);
-    }
 
     //i do not understand why this is needed
     //but it works so
-    void Update()
-    {
-            bool down = Input.GetMouseButtonDown(0);
-            bool up = Input.GetMouseButtonUp(0);
-            bool hold = Input.GetMouseButton(0);
+    //void Update()
+    //{
+    //        bool down = Input.GetMouseButtonDown(0);
+    //        bool up = Input.GetMouseButtonUp(0);
+    //        bool hold = Input.GetMouseButton(0);
 
-            if (down)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit))
-                {
+    //        if (down)
+    //        {
+    //            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //            if (Physics.Raycast(ray, out RaycastHit hit))
+    //            {
 
-                    if (Array.Exists(monkey.rbs, rb => rb == hit.rigidbody))
-                    {
-                        OnMouseDown();
-                    }
-                }
-            }
-            if (hold && isDragging)
-            {
-                OnMouseDrag();
-            }
-            if (up && isDragging)
-            {
-                OnMouseUp();
-            }
-        
-    }
+    //                if (Array.Exists(monkey.rbs, rb => rb == hit.rigidbody))
+    //                {
+    //                    OnMouseDown();
+    //                }
+    //            }
+    //        }
+    //        if (hold && isDragging)
+    //        {
+    //            OnMouseDrag();
+    //        }
+    //        if (up && isDragging)
+    //        {
+    //            OnMouseUp();
+    //        }
+
+    //}
 }

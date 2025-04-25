@@ -23,6 +23,13 @@ namespace MBNamespace
             accessory
         };
 
+        public enum GAMESTATE
+        {
+            menu,
+            game,
+            gameover
+        }
+
         //not affiliated with monkeytype.com...
         public enum MONKEYTYPE
         {
@@ -102,6 +109,16 @@ namespace MBNamespace
                         validTextures.Add(txtr);
                     }
                 }
+            }
+            int randMonkeyMat = UnityEngine.Random.Range(0, validTextures.Count);
+            return validTextures[randMonkeyMat];
+        }
+        public static Texture TrueRandoMonkeyTexture()
+        {
+            List<Texture> validTextures = new List<Texture>();
+            foreach (Texture txtr in monkeyTextures)
+            {
+                validTextures.Add(txtr); //just gets all the colors
             }
             int randMonkeyMat = UnityEngine.Random.Range(0, validTextures.Count);
             return validTextures[randMonkeyMat];

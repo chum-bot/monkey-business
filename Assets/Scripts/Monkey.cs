@@ -73,7 +73,6 @@ public class Monkey : MonoBehaviour
         truePosition = AverageRBPos(rbs);
         foreach (Rigidbody rb in rbs)
         {
-            rb.mass *= 1.6f;
             rbInitPos[rb] = rb.position;
             rbPosDiff[rb] = rb.position - truePosition;
         }

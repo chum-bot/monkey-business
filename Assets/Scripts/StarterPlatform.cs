@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class StarterPlatform : MonoBehaviour
 {
+    private void Start()
+    {
+        Physics.gravity *= 4;
+    }
     // Start is called before the first frame update
     private void OnCollisionEnter(Collision collision)
     {

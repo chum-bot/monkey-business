@@ -16,10 +16,10 @@ public class PointManager : MonoBehaviour
     private float scoreCD;
 
     [SerializeField]
-    Text scoreText;
+    public Text scoreText;
 
     [SerializeField]
-    Text comboText;
+    public Text comboText;
 
     [SerializeField]
     Text addedScoreText;
@@ -88,13 +88,10 @@ public class PointManager : MonoBehaviour
         float t = colorPulseTime;
         while (t > 0)
         {
-            if(pulseColor != Color.red)
-            {
-                addedScoreText.CrossFadeAlpha(1, 0f, true);
-                addedScoreText.CrossFadeAlpha(0, 0.3f, false);
-            }
-            addedScoreText.color = Color.Lerp(Color.black, pulseColor, t / colorPulseTime);
-            scoreText.color = Color.Lerp(Color.black, pulseColor, t / colorPulseTime);
+            addedScoreText.CrossFadeAlpha(1, 0f, true);
+            addedScoreText.CrossFadeAlpha(0, 0.3f, false);
+            addedScoreText.color = Color.Lerp(Color.white, pulseColor, t / colorPulseTime);
+            scoreText.color = Color.Lerp(Color.white, pulseColor, t / colorPulseTime);
 
             t -= Time.fixedDeltaTime;
             yield return new WaitForEndOfFrame();
